@@ -16,6 +16,19 @@ const Navigation = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-};
 
-//
+  //close menu when clicking outside or on a link
+  const closeMenu = () => setIsMenuOpen(false);
+
+  //prevent body scroll when the body is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
+};
