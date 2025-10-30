@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Upload, Search, MessageCircle, Shield, Play } from "lucide-react";
 import { title } from "process";
+import Navbar from "./Navbar";
 
 const TalentCourtLanding = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -89,8 +90,9 @@ const TalentCourtLanding = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 text-white">
+      <Navbar />
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-800">
+      {/* <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -131,7 +133,7 @@ const TalentCourtLanding = () => {
             </div>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6">

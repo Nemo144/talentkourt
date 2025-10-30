@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Play, Menu, X } from "lucide-react";
 import Link from "next/link";
 
-const Navigation = () => {
+const Navbar = () => {
   //states for the menu and scroll effects
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -188,4 +188,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default Navbar;
