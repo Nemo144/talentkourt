@@ -90,50 +90,8 @@ const TalentCourtLanding = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 text-white">
-      <Navbar />
       {/* Navigation */}
-      {/* <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
-                <Play className="w-5 h-5" fill="white" />
-              </div>
-              <span className="text-xl font-bold">TalentCourt</span>
-            </div>
-
-            <div className="hidden md:flex items-center gap-8">
-              <a
-                href="#features"
-                className="text-gray-300 hover:text-white transition"
-              >
-                Features
-              </a>
-              <a
-                href="#how-it-works"
-                className="text-gray-300 hover:text-white transition"
-              >
-                How It Works
-              </a>
-              <a
-                href="#pricing"
-                className="text-gray-300 hover:text-white transition"
-              >
-                Pricing
-              </a>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <button className="text-gray-300 hover:text-white transition">
-                Login
-              </button>
-              <button className="px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-600 rounded-lg font-semibold hover:from-pink-600 hover:to-rose-700 transition">
-                Sign Up for Free
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav> */}
+      <Navbar />
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6">
