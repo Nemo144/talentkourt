@@ -1,12 +1,12 @@
 "use client";
 import Image from "next/image";
-import Home from "@/pages/Home";
+// import Home from "@/pages/Home";
 import TalentCourtLanding from "@/pages/TalentCourtLanding";
 
 const page = () => {
   return (
     <div>
-      <Home />
+      {/* <Home /> */}
       <TalentCourtLanding />
     </div>
   );
