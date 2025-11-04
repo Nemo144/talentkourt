@@ -79,10 +79,10 @@ const Navbar = () => {
 
             {/* Desktop Auth Buttons */}
             <div className="hidden md:flex items-center gap-4">
-              <button className="text-gray-300 hover:text-white transition font-medium">
+              <button className="text-gray-300 hover:text-white transition font-medium cursor-pointer">
                 Login
               </button>
-              <button className="px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-600 rounded-lg font-semibold hover:from-pink-600 hover:to-rose-700 transition shadow-lg hover:shadow-pink-500/25">
+              <button className="px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-600 rounded-lg font-semibold hover:from-pink-600 hover:to-rose-700 transition shadow-lg hover:shadow-pink-500/25 cursor-pointer">
                 Sign Up for Free
               </button>
             </div>
@@ -163,7 +163,7 @@ const Navbar = () => {
               <div className="border-t border-gray-800 pt-6 mt-6 space-y-4">
                 <button
                   onClick={closeMenu}
-                  className="w-full px-6 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition font-medium text-center"
+                  className="w-full cursor-pointer px-6 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition font-medium text-center"
                 >
                   Login
                 </button>
