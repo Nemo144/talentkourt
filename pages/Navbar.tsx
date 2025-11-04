@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Play, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { Play, Menu, X } from "lucide-react";
 
 const Navbar = () => {
-  //states for the menu and scroll effects
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  //handle scroll effect
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -18,10 +17,10 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  //close menu when clicking outside or on a link
+  // Close menu when clicking outside or on a link
   const closeMenu = () => setIsMenuOpen(false);
 
-  //prevent body scroll when the body is open
+  // Prevent body scroll when menu is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -47,7 +46,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link
               href="/"
-              className="flex cursor-pointer items-center gap-2 hover:opacity-80 transition"
+              className="flex items-center gap-2 hover:opacity-80 transition"
             >
               <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
                 <Play className="w-5 h-5 text-white" fill="white" />
@@ -57,34 +56,40 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
-              <Link
+              <a
                 href="#features"
                 className="text-gray-300 hover:text-white transition font-medium"
               >
                 Features
-              </Link>
-              <Link
+              </a>
+              <a
                 href="#how-it-works"
                 className="text-gray-300 hover:text-white transition font-medium"
               >
                 How It Works
-              </Link>
-              {/* <Link
+              </a>
+              {/* <a
                 href="#pricing"
                 className="text-gray-300 hover:text-white transition font-medium"
               >
                 Pricing
-              </Link> */}
+              </a> */}
             </div>
 
             {/* Desktop Auth Buttons */}
             <div className="hidden md:flex items-center gap-4">
-              <button className="text-gray-300 hover:text-white transition font-medium cursor-pointer">
+              <Link
+                href="/signin"
+                className="text-gray-300 hover:text-white transition font-medium"
+              >
                 Login
-              </button>
-              <button className="px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-600 rounded-lg font-semibold hover:from-pink-600 hover:to-rose-700 transition shadow-lg hover:shadow-pink-500/25 cursor-pointer">
+              </Link>
+              <Link
+                href="/signup"
+                className="px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-600 rounded-lg font-semibold hover:from-pink-600 hover:to-rose-700 transition shadow-lg hover:shadow-pink-500/25"
+              >
                 Sign Up for Free
-              </button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -138,44 +143,47 @@ const Navbar = () => {
           {/* Mobile Menu Links */}
           <div className="flex-1 overflow-y-auto px-6 py-8">
             <div className="space-y-6">
-              <Link
+              <a
                 href="#features"
                 onClick={closeMenu}
                 className="block text-lg font-medium text-gray-300 hover:text-white transition py-2"
               >
                 Features
-              </Link>
-              <Link
+              </a>
+              <a
                 href="#how-it-works"
                 onClick={closeMenu}
                 className="block text-lg font-medium text-gray-300 hover:text-white transition py-2"
               >
                 How It Works
-              </Link>
-              <Link
+              </a>
+              <a
                 href="#pricing"
                 onClick={closeMenu}
                 className="block text-lg font-medium text-gray-300 hover:text-white transition py-2"
               >
                 Pricing
-              </Link>
+              </a>
 
               <div className="border-t border-gray-800 pt-6 mt-6 space-y-4">
-                <button
+                <Link
+                  href="/signin"
                   onClick={closeMenu}
-                  className="w-full cursor-pointer px-6 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition font-medium text-center"
+                  className="block w-full px-6 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition font-medium text-center"
                 >
                   Login
-                </button>
-                <button
+                </Link>
+                <Link
+                  href="/signup"
                   onClick={closeMenu}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-600 rounded-lg font-semibold hover:from-pink-600 hover:to-rose-700 transition shadow-lg text-white"
+                  className="block w-full px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-600 rounded-lg font-semibold hover:from-pink-600 hover:to-rose-700 transition shadow-lg text-white text-center"
                 >
                   Sign Up for Free
-                </button>
+                </Link>
               </div>
             </div>
           </div>
+
           {/* Mobile Menu Footer */}
           <div className="px-6 py-4 border-t border-gray-800">
             <p className="text-sm text-gray-400 text-center">
