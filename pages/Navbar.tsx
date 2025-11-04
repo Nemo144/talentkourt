@@ -47,7 +47,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center gap-2 hover:opacity-80 transition"
+              className="flex cursor-pointer items-center gap-2 hover:opacity-80 transition"
             >
               <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
                 <Play className="w-5 h-5 text-white" fill="white" />
@@ -57,24 +57,24 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
-              <a
+              <Link
                 href="#features"
                 className="text-gray-300 hover:text-white transition font-medium"
               >
                 Features
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#how-it-works"
                 className="text-gray-300 hover:text-white transition font-medium"
               >
                 How It Works
-              </a>
-              <a
+              </Link>
+              {/* <Link
                 href="#pricing"
                 className="text-gray-300 hover:text-white transition font-medium"
               >
                 Pricing
-              </a>
+              </Link> */}
             </div>
 
             {/* Desktop Auth Buttons */}
@@ -138,27 +138,27 @@ const Navbar = () => {
           {/* Mobile Menu Links */}
           <div className="flex-1 overflow-y-auto px-6 py-8">
             <div className="space-y-6">
-              <a
+              <Link
                 href="#features"
                 onClick={closeMenu}
                 className="block text-lg font-medium text-gray-300 hover:text-white transition py-2"
               >
                 Features
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#how-it-works"
                 onClick={closeMenu}
                 className="block text-lg font-medium text-gray-300 hover:text-white transition py-2"
               >
                 How It Works
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#pricing"
                 onClick={closeMenu}
                 className="block text-lg font-medium text-gray-300 hover:text-white transition py-2"
               >
                 Pricing
-              </a>
+              </Link>
 
               <div className="border-t border-gray-800 pt-6 mt-6 space-y-4">
                 <button
