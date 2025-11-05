@@ -47,7 +47,7 @@ const SignupPage = () => {
       ...formData,
       positions: selectedPositions,
     });
-    // Handle registration logic here
+    // Handle registration logic here for when the api for the backend is up and running!!
   };
 
   return (
