@@ -68,12 +68,6 @@ const Navbar = () => {
               >
                 How It Works
               </a>
-              {/* <a
-                href="#pricing"
-                className="text-gray-300 hover:text-white transition font-medium"
-              >
-                Pricing
-              </a> */}
             </div>
 
             {/* Desktop Auth Buttons */}
