@@ -65,11 +65,21 @@ const SignupPage = () => {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-2 mb-4">
               <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
-                <Play className="w-6 h-6 text-white" fill="white" />
+                <Link
+                  href="/"
+                  className="flex items-center gap-2 mb-3 hover:opacity-80 transition"
+                >
+                  <Play className="w-6 h-6 text-white" fill="white" />
+                </Link>
               </div>
-              <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">
-                TalentCourt
-              </h1>
+              <Link
+                href="/"
+                className="flex items-center gap-2 mb-3 hover:opacity-80 transition"
+              >
+                <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">
+                  TalentCourt
+                </h1>
+              </Link>
             </div>
             <h2 className="text-3xl font-bold text-white mb-2">
               Welcome to
