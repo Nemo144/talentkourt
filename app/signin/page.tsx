@@ -2,8 +2,7 @@
 
 import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-
-// Note: In your actual Next.js project, use: import Link from 'next/link';
+import Link from "next/link";
 
 const SignInPage = () => {
   const [formData, setFormData] = useState({
@@ -30,12 +29,12 @@ const SignInPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Sign in:", formData);
-    // TODO: authentication API call
+    // TODO: Add your authentication API call here
   };
 
   const handleSocialLogin = (provider: string) => {
     console.log(`Login with ${provider}`);
-    // TODO: social login
+    // TODO: Implement social login
   };
 
   return (
@@ -46,12 +45,17 @@ const SignInPage = () => {
           <div>
             {/* Logo */}
             <div className="flex items-center gap-3 mb-16">
-              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+              {/* <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center"> */}
+              <Link
+                href="/"
+                className="flex items-center gap-2 mb-3 hover:opacity-80 transition"
+              >
                 <span className="text-2xl">🏆</span>
-              </div>
-              <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">
-                TalentCourt
-              </span>
+                {/* </div> */}
+                <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">
+                  TalentCourt
+                </span>
+              </Link>
             </div>
 
             <div className="text-gray-400 text-sm mb-8">
@@ -115,22 +119,25 @@ const SignInPage = () => {
           <div className="w-full max-w-md">
             {/* Mobile Logo */}
             <div className="lg:hidden flex flex-col items-center mb-8">
-              <div className="flex items-center gap-2 mb-3">
+              <Link
+                href="/"
+                className="flex items-center gap-2 mb-3 hover:opacity-80 transition"
+              >
                 <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
                   <span className="text-xl">🏆</span>
                 </div>
                 <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">
                   TalentCourt
                 </span>
-              </div>
+              </Link>
               <p className="text-gray-400 text-sm text-center">
                 Connect with professional opportunities across all sports
               </p>
             </div>
 
             <div className="bg-gray-900/50 backdrop-blur-lg rounded-2xl border border-gray-800 p-8 shadow-2xl">
-              <h2 className="text-3xl font-bold text-white mb-8 lg:mb-6">
-                Welcome Back
+              <h2 className="text-3xl font-bold text-white mb-8 lg:mb-6 hover:text-orange-500 transition cursor-pointer">
+                <Link href="/">Welcome Back</Link>
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-5">
