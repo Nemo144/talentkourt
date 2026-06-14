@@ -51,7 +51,7 @@ const Navbar = () => {
               <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
                 <Play className="w-5 h-5 text-white" fill="white" />
               </div>
-              <span className="text-xl font-bold text-white">TalentCourt</span>
+              <span className="text-xl font-bold text-white">Sportss</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -123,7 +123,7 @@ const Navbar = () => {
               <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
                 <Play className="w-5 h-5 text-white" fill="white" />
               </div>
-              <span className="text-xl font-bold text-white">TalentCourt</span>
+              <span className="text-xl font-bold text-white">Sportss</span>
             </div>
             <button
               onClick={closeMenu}
@@ -181,7 +181,7 @@ const Navbar = () => {
           {/* Mobile Menu Footer */}
           <div className="px-6 py-4 border-t border-gray-800">
             <p className="text-sm text-gray-400 text-center">
-              © 2025 TalentCourt. All rights reserved.
+              © 2025 Sportss. All rights reserved.
             </p>
           </div>
         </div>

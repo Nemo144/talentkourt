@@ -166,7 +166,7 @@ const VideoDiscoveryPage = () => {
               </div>
               <span className="text-2xl font-bold hidden sm:block">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">
-                  TalentCourt
+                  Sportss
                 </span>
               </span>
             </div>
