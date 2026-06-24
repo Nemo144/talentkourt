@@ -1,3 +1,9 @@
+export enum VerificationStatus {
+  Pending = "PENDING",
+  Rejected = "REJECTED",
+  Verified = "VERIFIED",
+  Suspended = "SUSPENDED",
+}
 export interface User {
   id: string;
   userType: "athlete" | "scout" | "admin";
@@ -18,11 +24,4 @@ export interface SId {
   prefix: "ATH" | "SCT";
   created: Date;
   userId: string;
-}
-
-export enum VerificationStatus {
-  Pending = "PENDING",
-  Rejected = "REJECTED",
-  Verified = "VERIFIED",
-  Suspended = "SUSPENDED",
 }
