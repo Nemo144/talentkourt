@@ -12,3 +12,10 @@ export interface User {
     lastActive: Date | null;
   };
 }
+
+export interface SId {
+  uid: string;
+  prefix: "ATH" | "SCT";
+  created: Date;
+  userId: string;
+}
