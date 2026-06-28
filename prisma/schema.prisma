@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+//userType enum
+enum UserType {
+  ATHLETE
+  SCOUT
+  ADMIN
+}
+
+//Verification status enum
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  SUSPENDED
+}
+
+//prefix enum
+enum Prefix {
+  ATH
+  SCT
+}
+
+//user model
+model User {
+  id String @id @default(cuid())
+  userType UserType
+  sid String?
+  status VerificationStatus @default(PENDING)
+  sidRecord Sid?
+
+  //auth nested object
+  email String @unique
+  passwordHash String
+
+  //timestamp nested object
+  joinedAt DateTime @default(now())
+  lastActive DateTime?
+}
+
+//s.id model
+model Sid {
+  uid String @id
+  prefix Prefix 
+  created DateTime @default(now())
+
+  //define the userid and user relation
+  user User @relation(fields: [userId], references: [id])
+  userId String @unique
+}
+
+
