@@ -29,8 +29,44 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!isValid) return null;
 
-        return user;
+        return {
+          id: user.id,
+          email: user.email,
+          sid: user.sid ?? undefined,
+          userType: user.userType,
+          status: user.status,
+        };
       },
     }),
   ],
+
+  callbacks: {
+    jwt({ token, user }) {
+      //if user exists(runs only on first signin)
+      if (user) {
+        token.id = user.id;
+        token.sid = user.sid;
+        token.userType = user.userType;
+        token.status = user.status;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      //expose token fields to the frontend session object
+      session.user.id = token.id as string;
+      session.user.sid = token.sid as string;
+      session.user.userType = token.userType as
+        | "ATHLETE"
+        | "SCOUT"
+        | "ADMIN"
+        | undefined;
+      session.user.status = token.status as
+        | "PENDING"
+        | "VERIFIED"
+        | "REJECTED"
+        | "SUSPENDED"
+        | undefined;
+      return session;
+    },
+  },
 });
