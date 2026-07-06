@@ -53,7 +53,7 @@ const SignInPage = () => {
                 <span className="text-2xl">🏆</span>
                 {/* </div> */}
                 <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">
-                  Sportss
+                  TalentCourt
                 </span>
               </Link>
             </div>
@@ -91,9 +91,9 @@ const SignInPage = () => {
             {/* Testimonial */}
             <div className="border-l-4 border-orange-500 pl-6 py-4 bg-gradient-to-r from-orange-950/20 to-transparent rounded-r-lg">
               <p className="text-gray-300 italic mb-4 leading-relaxed">
-                &quot;Sportss connected me with scouts from top universities.
-                Within months, I received offers from programs I&apos;d always
-                dreamed about.&quot;
+                &quot;TalentCourt connected me with scouts from top
+                universities. Within months, I received offers from programs
+                I&apos;d always dreamed about.&quot;
               </p>
               <p className="text-gray-400 text-sm">
                 — Marcus Johnson, Professional Basketball Player
@@ -127,7 +127,7 @@ const SignInPage = () => {
                   <span className="text-xl">🏆</span>
                 </div>
                 <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">
-                  Sportss
+                  TalentCourt
                 </span>
               </Link>
               <p className="text-gray-400 text-sm text-center">
@@ -305,7 +305,7 @@ const SignInPage = () => {
               </a>
             </div>
             <div className="lg:hidden text-center mt-4 text-xs text-gray-600">
-              © 2024 Sportss. All rights reserved.
+              © 2024 TalentCourt. All rights reserved.
             </div>
           </div>
         </div>
@@ -326,7 +326,7 @@ const SignInPage = () => {
             </a>
           </div>
           <div className="text-gray-600">
-            © 2024 Sportss. All rights reserved.
+            © 2024 TalentCourt. All rights reserved.
           </div>
         </div>
       </div>

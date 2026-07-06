@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export const requireAdmin = async () => {
-  //initialize the loggin session
+  //initialize the sign-in session
   const session = await auth();
 
   //check if user is not logged in

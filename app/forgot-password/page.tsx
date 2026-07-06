@@ -46,7 +46,7 @@ const ForgotPasswordPage = () => {
                   <span className="text-xl">🏆</span>
                 </div>
                 <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">
-                  Sportss
+                  TalentCourt
                 </span>
               </div>
 
@@ -169,7 +169,7 @@ const ForgotPasswordPage = () => {
 
         {/* Footer */}
         <div className="mt-8 text-center text-xs text-gray-600">
-          © 2024 Sportss. All rights reserved.
+          © 2024 TalentCourt. All rights reserved.
         </div>
       </div>
     </div>

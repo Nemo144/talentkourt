@@ -3,7 +3,7 @@ import { Upload, Search, MessageCircle, Shield, Play } from "lucide-react";
 import { title } from "process";
 import Navbar from "./Navbar";
 
-const SportssLanding = () => {
+const TalentCourtLanding = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   const features = [
@@ -72,7 +72,7 @@ const SportssLanding = () => {
       name: "Marcus Johnson",
       role: "Professional Athlete",
       image: "MJ",
-      text: "Sportss changed my life, within weeks of uploading my highlights, I was contacted by three college scouts. The platform's verified system made me feel safe.",
+      text: "TalentCourt changed my life, within weeks of uploading my highlights, I was contacted by three college scouts. The platform's verified system made me feel safe.",
     },
     {
       name: "Sarah Chen",
@@ -120,11 +120,11 @@ const SportssLanding = () => {
         </div>
       </section>
 
-      {/* Why Choose Sportss */}
+      {/* Why Choose TalentCourt */}
       <section id="features" className="py-20 px-6 bg-gray-900/50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Why Choose Sportss?</h2>
+            <h2 className="text-4xl font-bold mb-4">Why Choose TalentCourt?</h2>
             <p className="text-gray-400 text-lg">
               Everything you need to succeed as an emerging athlete.
             </p>
@@ -289,7 +289,7 @@ const SportssLanding = () => {
                 <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
                   <Play className="w-5 h-5" fill="white" />
                 </div>
-                <span className="text-xl font-bold">Sportss</span>
+                <span className="text-xl font-bold">TalentCourt</span>
               </div>
               <p className="text-gray-400 text-sm">
                 Connecting emerging athletes to professional opportunities
@@ -362,7 +362,7 @@ const SportssLanding = () => {
           </div>
 
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
-            <p>© 2025 Sportss. All rights reserved.</p>
+            <p>© 2025 TalentCourt. All rights reserved.</p>
           </div>
         </div>
       </footer>
@@ -370,4 +370,4 @@ const SportssLanding = () => {
   );
 };
 
-export default SportssLanding;
+export default TalentCourtLanding;

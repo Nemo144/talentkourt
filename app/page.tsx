@@ -1,13 +1,13 @@
 "use client";
 import Image from "next/image";
 // import Home from "@/pages/Home";
-import SportssLanding from "@/app/pages/SportssLanding";
+import TalentCourtLanding from "@/app/pages/TalentCourtLanding";
 
 const page = () => {
   return (
     <div>
       {/* <Home /> */}
-      <SportssLanding />
+      <TalentCourtLanding />
     </div>
   );
 };
