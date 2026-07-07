@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../lib/generated/prisma"
@@ -12,14 +7,45 @@ datasource db {
   provider = "postgresql"
 }
 
-//userType enum
+model User {
+  id                    String             @id @default(cuid())
+  userType              UserType
+  status                VerificationStatus @default(PENDING)
+  email                 String             @unique
+  passwordHash          String
+  joinedAt              DateTime           @default(now())
+  lastActive            DateTime?
+  tid                   String?
+  tidRecord             Tid?
+  verificationsGiven    VerificationLog[]  @relation("AdminVerifications")
+  verificationsReceived VerificationLog[]  @relation("UserVerifications")
+}
+
+model Tid {
+  uid     String   @id
+  prefix  Prefix
+  created DateTime @default(now())
+  userId  String   @unique
+  user    User     @relation(fields: [userId], references: [id])
+}
+
+model VerificationLog {
+  id                 String             @id @default(cuid())
+  userId             String
+  adminId            String
+  verifiedAt         DateTime           @default(now())
+  verificationStatus VerificationStatus
+  notes              String?
+  admin              User               @relation("AdminVerifications", fields: [adminId], references: [id])
+  user               User               @relation("UserVerifications", fields: [userId], references: [id], onDelete: Cascade)
+}
+
 enum UserType {
   ATHLETE
   SCOUT
   ADMIN
 }
 
-//Verification status enum
 enum VerificationStatus {
   PENDING
   VERIFIED
@@ -27,54 +53,7 @@ enum VerificationStatus {
   SUSPENDED
 }
 
-//prefix enum
 enum Prefix {
   ATH
   SCT
 }
-
-//user model
-model User {
-  id String @id @default(cuid())
-  userType UserType
-  sid String?
-  status VerificationStatus @default(PENDING)
-  sidRecord Sid?
-
-  //auth nested object
-  email String @unique
-  passwordHash String
-
-  //timestamp nested object
-  joinedAt DateTime @default(now())
-  lastActive DateTime?
-
-  //back-relations
-  verificationsReceived VerificationLog[] @relation("UserVerifications")
-  verificationsGiven    VerificationLog[] @relation("AdminVerifications")
-}
-
-//s.id model
-model Sid {
-  uid String @id
-  prefix Prefix 
-  created DateTime @default(now())
-
-  //define the userid and user relation
-  user User @relation(fields: [userId], references: [id])
-  userId String @unique
-}
-
-//VerificationLog model
-model VerificationLog {
-  id String @id @default(cuid())
-  userId String
-  user User @relation("UserVerifications", fields: [userId], references: [id], onDelete: Cascade)
-  adminId String
-  admin User @relation("AdminVerifications", fields: [adminId], references: [id])
-  verifiedAt DateTime @default(now())
-  verificationStatus VerificationStatus
-  notes String?
-}
-
-

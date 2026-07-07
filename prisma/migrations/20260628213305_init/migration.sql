@@ -11,7 +11,7 @@ CREATE TYPE "Prefix" AS ENUM ('ATH', 'SCT');
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "userType" "UserType" NOT NULL,
-    "sid" TEXT,
+    "TId" TEXT,
     "status" "VerificationStatus" NOT NULL DEFAULT 'PENDING',
     "email" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
@@ -22,20 +22,20 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Sid" (
+CREATE TABLE "TId" (
     "uid" TEXT NOT NULL,
     "prefix" "Prefix" NOT NULL,
     "created" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
 
-    CONSTRAINT "Sid_pkey" PRIMARY KEY ("uid")
+    CONSTRAINT "TId_pkey" PRIMARY KEY ("uid")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Sid_userId_key" ON "Sid"("userId");
+CREATE UNIQUE INDEX "TId_userId_key" ON "TId"("userId");
 
 -- AddForeignKey
-ALTER TABLE "Sid" ADD CONSTRAINT "Sid_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "TId" ADD CONSTRAINT "TId_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

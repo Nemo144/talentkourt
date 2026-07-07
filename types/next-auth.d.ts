@@ -4,14 +4,14 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      sid?: string;
+      tid?: string;
       userType?: "ATHLETE" | "SCOUT" | "ADMIN";
       status?: "PENDING" | "VERIFIED" | "REJECTED" | "SUSPENDED";
     } & DefaultSession["user"];
   }
 
   interface User {
-    sid?: string;
+    tid?: string;
     userType?: "ATHLETE" | "SCOUT" | "ADMIN";
     status?: "PENDING" | "VERIFIED" | "REJECTED" | "SUSPENDED" | null;
   }

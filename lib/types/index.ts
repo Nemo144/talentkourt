@@ -7,7 +7,7 @@ export enum VerificationStatus {
 export interface User {
   id: string;
   userType: "athlete" | "scout" | "admin";
-  sid?: string;
+  TId?: string;
   status: VerificationStatus;
   auth: {
     email: string;
@@ -19,7 +19,7 @@ export interface User {
   };
 }
 
-export interface SId {
+export interface TId {
   uid: string;
   prefix: "ATH" | "SCT";
   created: Date;

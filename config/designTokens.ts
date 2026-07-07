@@ -49,7 +49,7 @@ export const designTokens = {
   },
 
   // S.id System
-  sid: {
+  TId: {
     format: "S.{id}",
     length: "",
     fontFamily: "'Courier New', monospace",

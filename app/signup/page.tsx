@@ -143,7 +143,7 @@ const SignupPage = () => {
               </div>
             </div>
 
-            {/* Age and Sport Side by Side */}
+            {/* Age and Sport TIde by TIde */}
             <div className="grid grid-cols-2 gap-4">
               {/* Age Dropdown */}
               <div>

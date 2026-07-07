@@ -40,7 +40,7 @@ const SignInPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
       <div className="min-h-screen flex flex-col lg:flex-row">
-        {/* Left Side - Stats & Testimonial (Desktop Only) */}
+        {/* Left TIde - Stats & Testimonial (Desktop Only) */}
         <div className="hidden lg:flex lg:w-1/2 p-12 flex-col justify-between">
           <div>
             {/* Logo */}
@@ -114,7 +114,7 @@ const SignInPage = () => {
           </div>
         </div>
 
-        {/* Right Side - Sign In Form */}
+        {/* Right TIde - Sign In Form */}
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-12">
           <div className="w-full max-w-md">
             {/* Mobile Logo */}

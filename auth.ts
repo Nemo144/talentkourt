@@ -32,7 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return {
           id: user.id,
           email: user.email,
-          sid: user.sid ?? undefined,
+          TId: user.tid ?? undefined,
           userType: user.userType,
           status: user.status,
         };
@@ -45,7 +45,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       //if user exists(runs only on first signin)
       if (user) {
         token.id = user.id;
-        token.sid = user.sid;
+        token.TId = user.tid;
         token.userType = user.userType;
         token.status = user.status;
       }
@@ -54,7 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     session({ session, token }) {
       //expose token fields to the frontend session object
       session.user.id = token.id as string;
-      session.user.sid = token.sid as string;
+      session.user.tid = token.TId as string;
       session.user.userType = token.userType as
         | "ATHLETE"
         | "SCOUT"

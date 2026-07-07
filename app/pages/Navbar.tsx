@@ -17,7 +17,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close menu when clicking outside or on a link
+  // Close menu when clicking outTIde or on a link
   const closeMenu = () => setIsMenuOpen(false);
 
   // Prevent body scroll when menu is open

@@ -7,7 +7,7 @@ export default function AdminLayout({
 }) {
   return (
     <div className="flex min-h-screen bg-[#0f0f0f]">
-      {/* Sidebar */}
+      {/* TIdebar */}
 
       <div className="w-64 bg-[#1a1a1a]">
         <AdminNav />
