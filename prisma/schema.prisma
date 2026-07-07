@@ -48,6 +48,10 @@ model User {
   //timestamp nested object
   joinedAt DateTime @default(now())
   lastActive DateTime?
+
+  //back-relations
+  verificationsReceived VerificationLog[] @relation("UserVerifications")
+  verificationsGiven    VerificationLog[] @relation("AdminVerifications")
 }
 
 //s.id model
@@ -59,6 +63,18 @@ model Sid {
   //define the userid and user relation
   user User @relation(fields: [userId], references: [id])
   userId String @unique
+}
+
+//VerificationLog model
+model VerificationLog {
+  id String @id @default(cuid())
+  userId String
+  user User @relation("UserVerifications", fields: [userId], references: [id], onDelete: Cascade)
+  adminId String
+  admin User @relation("AdminVerifications", fields: [adminId], references: [id])
+  verifiedAt DateTime @default(now())
+  verificationStatus VerificationStatus
+  notes String?
 }
 
 
