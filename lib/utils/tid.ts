@@ -3,7 +3,7 @@ import {
   MINIMUM_NUM,
   NUMERIC_LENGTH,
   VALID_PREFIX,
-} from "../constants/TId";
+} from "../constants/tid";
 
 //define type for the prefix
 type TIdPrefix = (typeof VALID_PREFIX)[number];
@@ -20,7 +20,7 @@ export const generateNumericId = (): number => {
   );
 };
 
-//generate concatenated TId eg "ATH-0011"
+//generate concatenated Tid eg "ATH-0011"
 export const generateTId = (prefix: TIdPrefix): string => {
   const id = generateNumericId();
   const paddedId = padNumericId(id);
