@@ -17,7 +17,7 @@ export const issueTId = async (userId: string, userType: string) => {
   const tid = generateTId(prefix);
 
   //save tid to the data table and update user status
-  await prisma.$transaction([
+  const [updatedUser] = await prisma.$transaction([
     prisma.user.update({
       where: { id: userId },
       data: { tid: tid, status: "VERIFIED" },
@@ -31,4 +31,6 @@ export const issueTId = async (userId: string, userType: string) => {
       },
     }),
   ]);
+
+  return updatedUser;
 };
