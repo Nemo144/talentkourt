@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
 export default async function UsersTable() {
   //fetch all system users directly from the db on the server
@@ -31,12 +32,12 @@ export default async function UsersTable() {
         <table className="min-w-full divide-y divide-zinc-900 text-left text-sm text-zinc-300">
           <thead className="bg-zinc-900/50 text-xs font-bold uppercase tracking-wider text-zinc-400">
             <tr>
-              <th className="px-6 py-4.5">Email Address</th>
-              <th className="px-6 py-4.5">Account Type</th>
-              <th className="px-6 py-4.5">Verification Status</th>
-              <th className="px-6 py-4.5">System T.ID</th>
-              <th className="px-6 py-4.5">Join Date</th>
-              <th className="px-6 py-4.5 text-right">Actions</th>
+              <th className="px-6 py-4">Email Address</th>
+              <th className="px-6 py-4">Account Type</th>
+              <th className="px-6 py-4">Verification Status</th>
+              <th className="px-6 py-4">System T.ID</th>
+              <th className="px-6 py-4">Join Date</th>
+              <th className="px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-900 bg-zinc-950/40">
@@ -122,6 +123,15 @@ export default async function UsersTable() {
                       month: "short",
                       day: "numeric",
                     })}
+                  </td>
+
+                  <td className="px-6 py-4 text-right">
+                    <Link
+                      href={`/admin/users/${user.id}`}
+                      className="text-xs font-semibold text-zinc-400 hover:text-white transition"
+                    >
+                      View →
+                    </Link>
                   </td>
                 </tr>
               ))
