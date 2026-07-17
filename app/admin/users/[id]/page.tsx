@@ -20,7 +20,7 @@ const UserDetailPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="p-6">
-      <UserDetailPanel user={user} />
+      <UserDetailPanel user={user!} />
     </div>
   );
 };
