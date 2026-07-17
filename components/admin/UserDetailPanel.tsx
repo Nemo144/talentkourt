@@ -2,15 +2,16 @@
 import React, { useTransition } from "react";
 import { revokeTid, editUserInfo, suspendUser } from "@/lib/actions/users";
 import { useSession } from "next-auth/react";
+import { UserType, VerificationStatus } from "@/lib/generated/prisma/enums";
 
 interface UserDetailPanelProps {
   user: {
     id: string;
     email: string;
-    userType: "ATHLETE" | "SCOUT";
+    userType: UserType;
     joinedAt: Date;
-    lastActive?: Date;
-    status: "PENDING" | "VERIFIED" | "REJECTED" | "SUSPENDED";
+    lastActive?: Date | null;
+    status: VerificationStatus;
     tid?: string | null;
   };
 }

@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/auth/adminMiddleware";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import UserDetailPanel from "@/components/admin/UserDetailPanel";
 
 const UserDetailPage = async ({ params }: { params: { id: string } }) => {
   await requireAdmin();
@@ -18,9 +19,8 @@ const UserDetailPage = async ({ params }: { params: { id: string } }) => {
   if (!user) notFound();
 
   return (
-    // <UserDetailPanel />
     <div className="p-6">
-      <pre className="text-white">{JSON.stringify(user, null, 2)}</pre>
+      <UserDetailPanel user={user} />
     </div>
   );
 };
