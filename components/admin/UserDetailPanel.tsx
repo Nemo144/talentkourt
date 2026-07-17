@@ -1,6 +1,7 @@
 "use client";
 import React, { useTransition } from "react";
 import { revokeTid, editUserInfo, suspendUser } from "@/lib/actions/users";
+import { useSession } from "next-auth/react";
 
 interface UserDetailPanelProps {
   user: {
@@ -19,8 +20,11 @@ const UserDetailPanel: React.FC<UserDetailPanelProps> = ({ user }) => {
   //at the same time without a manual loading spinner state
   const [isPending, startTransition] = useTransition();
 
-  //get from auth context
-  const adminId = "";
+  //useSession to manage the adminId's session
+  const { data: session } = useSession();
+
+  //get adminId from session, otherwise return ""
+  const adminId = session?.user.id ?? "";
 
   //function to trigger async actions from the server(revokeTid, editUserInfo, suspendUser)
   const triggerAction = (
