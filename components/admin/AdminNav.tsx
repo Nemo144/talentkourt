@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import logo from "../../public/TalentCourt.png";
+import logo from "../../public/tc.png";
 import { usePathname } from "next/navigation";
 
 const AdminNav = () => {
