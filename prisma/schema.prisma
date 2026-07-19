@@ -19,6 +19,9 @@ model User {
   tidRecord             Tid?
   verificationsGiven    VerificationLog[]  @relation("AdminVerifications")
   verificationsReceived VerificationLog[]  @relation("UserVerifications")
+  contentsCreated       Content[]          @relation("UserContent")
+  flagsSubmitted        Flag[]             @relation("UserFlags")
+  moderationsExecuted   ModerationLog[]    @relation("AdminModerations")
 }
 
 model Tid {
@@ -40,6 +43,45 @@ model VerificationLog {
   user               User               @relation("UserVerifications", fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Content {
+  id             String         @id @default(cuid()) // Unique identifier for the piece of content
+  userId         String         // ID of the user who posted it
+  type           ContentType    // Enforces enum: VIDEO, MESSAGE, PROFILE
+  referenceUrl   String?        // Reference URL or identifier
+  status         ContentStatus  @default(ACTIVE) // Enforces enum: ACTIVE, REMOVED, UNDER_REVIEW
+  createdAt      DateTime       @default(now())
+
+  // Relations
+  user           User           @relation("UserContent", fields: [userId], references: [id], onDelete: Cascade)
+  flags          Flag[]         // A single piece of content can have multiple flags
+  moderationLogs ModerationLog[] // Tracks all administrative actions taken on this content
+}
+
+model Flag {
+  id          String   @id @default(cuid())
+  contentId   String   // Which content was flagged
+  reportedBy  String   // Who flagged it (userId)
+  reason      String   // Reason for the flag
+  createdAt   DateTime @default(now()) // When it was flagged
+
+  // Relations
+  content     Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  reporter    User     @relation("UserFlags", fields: [reportedBy], references: [id], onDelete: Cascade)
+}
+
+model ModerationLog {
+  id         String           @id @default(cuid())
+  contentId  String           // Which content was acted on
+  adminId    String           // Which admin took action
+  action     ModerationAction // Enforces enum: APPROVED, REMOVED, WARNED
+  createdAt  DateTime         @default(now()) // When it happened
+  notes      String?          // Administrative justification notes
+
+  // Relations
+  content    Content          @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  admin      User             @relation("AdminModerations", fields: [adminId], references: [id])
+}
+
 enum UserType {
   ATHLETE
   SCOUT
@@ -56,4 +98,22 @@ enum VerificationStatus {
 enum Prefix {
   ATH
   SCT
+}
+
+enum ContentType {
+  VIDEO
+  MESSAGE
+  PROFILE
+}
+
+enum ContentStatus {
+  ACTIVE
+  REMOVED
+  UNDER_REVIEW
+}
+
+enum ModerationAction {
+  APPROVED
+  REMOVED
+  WARNED
 }
