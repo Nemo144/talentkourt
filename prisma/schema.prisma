@@ -22,7 +22,7 @@ model User {
   contentsCreated       Content[]          @relation("UserContent")
   flagsSubmitted        Flag[]             @relation("UserFlags")
   moderationsExecuted   ModerationLog[]    @relation("AdminModerations")
-  suspendUntil DateTime
+  suspendUntil DateTime?
 }
 
 model Tid {
