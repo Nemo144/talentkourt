@@ -72,7 +72,7 @@ export const removeContent = async (
   try {
     const result = await prisma.$transaction(async (tx) => {
       //update content status to removed
-      const updatedContent = await prisma.content.update({
+      const updatedContent = await tx.content.update({
         where: { id: contentId },
         data: { status: "REMOVED" as ContentStatus },
       });
@@ -139,7 +139,7 @@ export const warnUser = async ({
         );
 
         //update user account status
-        const updatedUser = tx.user.update({
+        const updatedUser = await tx.user.update({
           where: { id },
           data: { status: "SUSPENDED", suspendUntil: suspensionUntil },
         });
