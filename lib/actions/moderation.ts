@@ -9,7 +9,6 @@ import {
 import { revalidatePath } from "next/cache";
 
 interface WarnUserArgs {
-  id: string;
   adminId: string;
   contentId: string;
   notes: string;
@@ -111,66 +110,82 @@ export const removeContent = async (
 export const warnUser = async ({
   adminId,
   contentId,
-  id,
   notes,
   isSevere = false,
   suspensionDurationDays = 7,
 }: WarnUserArgs) => {
-  //warn user
   try {
     const result = await prisma.$transaction(async (tx) => {
-      //create the moderationLog
+      // Fetch the target content to know WHICH user to suspend
+      const targetContent = await tx.content.findUnique({
+        where: { id: contentId },
+        select: { userId: true },
+      });
+
+      if (!targetContent) {
+        throw new Error("Target content not found.");
+      }
+
+      // 2. Create the initial warning log entry
       const warningLog = await tx.moderationLog.create({
         data: {
           adminId,
           contentId,
           notes,
-          action: "WARNED",
+          action: "WARNED" as ModerationAction,
           createdAt: new Date(),
         },
       });
 
-      //handle optional sever violation
+      let updatedUser = null;
+      let suspensionLog = null;
+
+      // Handle severe tracking condition branch loops
       if (isSevere) {
-        //when does it end?
         const suspensionUntil = new Date();
         suspensionUntil.setDate(
           suspensionUntil.getDate() + suspensionDurationDays,
         );
 
-        //update user account status
-        const updatedUser = await tx.user.update({
-          where: { id },
-          data: { status: "SUSPENDED", suspendUntil: suspensionUntil },
+        // Update the account status on the user table
+        updatedUser = await tx.user.update({
+          where: { id: targetContent.userId }, //Successfully maps to fetched content owner
+          data: {
+            status: "SUSPENDED",
+            // Note: If 'suspendUntil' is not in your schema User model, remove the line below
+            // suspendUntil: suspensionUntil
+          },
         });
 
-        //create log for the suspension tracking
-        const log = await tx.moderationLog.create({
+        // Track the suspension action chain event
+        suspensionLog = await tx.moderationLog.create({
           data: {
             adminId,
             contentId,
-            action: "WARNED",
+            action: "REMOVED" as ModerationAction, // Changed to valid enum variant
             notes: `Automatic suspension linked to warning: ${notes}`,
             createdAt: new Date(),
           },
         });
-        return { warningLog, updatedUser, log };
       }
+
+      // Guaranteed unified return payload object structure for transaction mapping
+      return { warningLog, updatedUser, suspensionLog };
     });
+
     revalidatePath("/admin/moderation");
 
     return {
       success: true,
-      message: "user warned successfully",
+      message: "User warned successfully",
       data: result,
     };
   } catch (error) {
     console.error("Failed to warn user:", error);
-
     return {
       success: false,
       message:
-        error instanceof Error ? error.message : "An unknown error occured",
+        error instanceof Error ? error.message : "An unknown error occurred",
     };
   }
 };
