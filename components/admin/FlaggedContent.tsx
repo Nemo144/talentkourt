@@ -1,6 +1,6 @@
 import { ContentStatus } from "@/lib/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
-import React from "react";
+import ModerationAction from "./ModerationAction";
 
 const FlaggedContent = async () => {
   //fetch the under-review content
@@ -60,7 +60,7 @@ const FlaggedContent = async () => {
                     {item.flags.length === 1 ? "Flag" : "Flags"}
                   </span>
                   {/* Passes necessary identifiers down to the action triggers component */}
-                  {/* <FlaggedRowActions contentId={item.id} userId={item.userId} /> */}
+                  <ModerationAction contentId={item.id} userId={item.userId} />
                 </div>
               </div>
 
