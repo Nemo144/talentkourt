@@ -152,8 +152,7 @@ export const warnUser = async ({
           where: { id: targetContent.userId }, //Successfully maps to fetched content owner
           data: {
             status: "SUSPENDED",
-            // Note: If 'suspendUntil' is not in your schema User model, remove the line below
-            // suspendUntil: suspensionUntil
+            suspendUntil: suspensionUntil,
           },
         });
 
@@ -162,7 +161,7 @@ export const warnUser = async ({
           data: {
             adminId,
             contentId,
-            action: "REMOVED" as ModerationAction, // Changed to valid enum variant
+            action: "WARNED" as ModerationAction,
             notes: `Automatic suspension linked to warning: ${notes}`,
             createdAt: new Date(),
           },
