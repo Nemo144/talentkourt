@@ -126,7 +126,7 @@ export const warnUser = async ({
         throw new Error("Target content not found.");
       }
 
-      // 2. Create the initial warning log entry
+      // Create the initial warning log entry
       const warningLog = await tx.moderationLog.create({
         data: {
           adminId,
