@@ -1,11 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import {
-  UserType,
-  VerificationStatus,
-  ContentType,
-  ContentStatus,
-  ModerationAction,
-} from "../generated/prisma/enums";
 
 //define the getUserMetrics(), Returns a high-level summary of total users alongside role and status distributions
 export const getUserMetrics = async () => {
@@ -218,6 +211,46 @@ export const getModerationMetrics = async () => {
         error instanceof Error
           ? error.message
           : "An unknown moderation analytics error occurred",
+    };
+  }
+};
+
+//getTidMetrics() returns a total number of t.ids issued alongside breakdown by prefix
+export const getTidMetrics = async () => {
+  try {
+    //run the overall count and grouping at the same time to reduce db round-trips
+    const [totalTids, prefixCounts] = await Promise.all([
+      //count total rows in the t.id table
+      prisma.tid.count(),
+
+      //group and count by the prefix enum(ath, sct)
+      prisma.tid.groupBy({
+        by: ["prefix"],
+        _count: { uid: true },
+      }),
+    ]);
+
+    //Format the grouped prefix counts into a clean, object map
+    const byPrefix = {
+      ATH: prefixCounts.find((p) => p.prefix === "ATH")?._count.uid ?? 0,
+      SCT: prefixCounts.find((p) => p.prefix === "SCT")?._count.uid ?? 0,
+    };
+
+    return {
+      success: true,
+      data: {
+        byPrefix,
+        totalTids,
+      },
+    };
+  } catch (error) {
+    console.error("Failed to fetch system T.id analytics metrics:", error);
+    return {
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "An unknown T.id analytics error occurred",
     };
   }
 };
