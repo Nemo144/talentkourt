@@ -48,8 +48,6 @@ const COLORS = {
   ADMIN: "#64748b",
 };
 
-// ✅ FIX 1: Declared COMPLETELY OUTSIDE the render function body
-// Also uses the strict Recharts TooltipProps to satisfy your ESLint rules safely
 const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
