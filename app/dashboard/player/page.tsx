@@ -22,8 +22,32 @@ import {
   Clock,
   Target,
 } from "lucide-react";
+import TIdBadge from "@/components/TIdBadge";
+import VerificationBanner from "@/components/VerificationBanner";
+import VerificationTimeline from "@/components/VerificationTimeline";
 
-const PlayerDashboard = () => {
+interface PlayerDashboardProps {
+  verificationData?: {
+    tid?: string | null;
+    status: "PENDING" | "VERIFIED" | "REJECTED" | "SUSPENDED";
+    joinedAt: Date | string;
+    logs: Array<{
+      id: string;
+      verifiedAt: Date | string;
+      verificationStatus: "PENDING" | "VERIFIED" | "REJECTED" | "SUSPENDED";
+      notes?: string | null;
+    }>;
+  };
+}
+
+const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
+  verificationData = {
+    tid: "ATH-00123",
+    status: "VERIFIED",
+    joinedAt: "2026-01-15T12:00:00Z",
+    logs: [],
+  },
+}) => {
   const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
 
   // Mock data
@@ -136,6 +160,17 @@ const PlayerDashboard = () => {
     },
   ];
 
+  const handleBannerCtaClick = () => {
+    alert("Navigating to credentials upload module...");
+  };
+
+  const bannerStatus =
+    verificationData.status === "VERIFIED"
+      ? "VERIFIED"
+      : verificationData.status === "REJECTED"
+        ? "REJECTED"
+        : "UNVERIFIED";
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
       {/* Top Navigation */}
@@ -231,6 +266,15 @@ const PlayerDashboard = () => {
                 </div>
               </div>
 
+              {/* tidBadge */}
+              <div className="pt-4 border-t border-gray-800/60 w-full flex justify-center">
+                <TIdBadge
+                  tid={verificationData.tid}
+                  status={verificationData.status}
+                  joinedAt={new Date(verificationData.joinedAt)}
+                />
+              </div>
+
               {/* Stats Grid */}
               <div className="grid grid-cols-3 gap-3 mb-6">
                 <div className="text-center p-3 bg-gray-800/50 rounded-xl">
@@ -267,6 +311,17 @@ const PlayerDashboard = () => {
                 </div>
               </div>
 
+              {/* verification banner */}
+              {verificationData.status !== "VERIFIED" &&
+                verificationData.status !== "PENDING" && (
+                  <div className="w-full">
+                    <VerificationBanner
+                      status={bannerStatus as "UNVERIFIED" | "REJECTED"}
+                      onCtaClick={handleBannerCtaClick}
+                    />
+                  </div>
+                )}
+
               {/* Quick Stats */}
               <div className="mb-4">
                 <h4 className="text-sm font-semibold mb-3">Quick Stats</h4>
@@ -294,6 +349,14 @@ const PlayerDashboard = () => {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* verification timeline */}
+              <div className="w-full">
+                <VerificationTimeline
+                  logs={verificationData.logs}
+                  joinedAt={new Date(verificationData.joinedAt)}
+                />
               </div>
 
               {/* Action Buttons */}
