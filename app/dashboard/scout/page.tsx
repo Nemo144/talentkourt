@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import VerifiedBadgeFilter from "@/components/VerifiedBadgeFilter";
 import {
   Eye,
   Mail,
@@ -26,7 +27,13 @@ import {
 } from "lucide-react";
 
 const ScoutDashboard = () => {
+  //state to handle the selected athlete
   const [selectedAthlete, setSelectedAthlete] = useState<number | null>(null);
+
+  //filter state
+  const [activeFilter, setActiveFilter] = useState<
+    "ALL" | "VERIFIED_ONLY" | "UNVERIFIED_ONLY"
+  >("ALL");
 
   const scoutData = {
     name: "Mark Thompson",
@@ -78,6 +85,7 @@ const ScoutDashboard = () => {
     {
       id: 1,
       name: "Athlete Name",
+      verified: true,
       sport: "Basketball",
       position: "SG",
       age: 17,
@@ -94,6 +102,7 @@ const ScoutDashboard = () => {
     {
       id: 2,
       name: "Athlete Pentee",
+      verified: false,
       sport: "Basketball",
       position: "SG",
       age: 17,
@@ -108,6 +117,13 @@ const ScoutDashboard = () => {
       price: "50px",
     },
   ];
+
+  //filter new matches based on activeFilter
+  const filteredMatches = newMatches.filter((match) => {
+    if (activeFilter === "VERIFIED_ONLY") return match.verified;
+    if (activeFilter === "UNVERIFIED_ONLY") return !match.verified;
+    return true;
+  });
 
   const recentMessages = [
     {
@@ -482,6 +498,11 @@ const ScoutDashboard = () => {
               })}
             </div>
 
+            <VerifiedBadgeFilter
+              currentFilter={activeFilter}
+              onFilterChange={setActiveFilter}
+            />
+
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
               {/* Left Column: New Matches (7/12 Layout Space) */}
               <div className="md:col-span-7 rounded-2xl border border-zinc-900 bg-zinc-950/40 p-5 space-y-4">
@@ -500,7 +521,7 @@ const ScoutDashboard = () => {
                 </div>
 
                 <div className="space-y-3">
-                  {newMatches.map((match) => (
+                  {filteredMatches.map((match) => (
                     <div
                       key={match.id}
                       className="group flex items-center justify-between p-3 rounded-xl border border-zinc-900/60 bg-zinc-950/80 hover:border-zinc-800 transition-colors cursor-pointer"
@@ -517,9 +538,17 @@ const ScoutDashboard = () => {
                           />
                         </div>
                         <div>
-                          <h5 className="text-xs font-bold text-zinc-200 group-hover:text-white transition">
-                            {match.name}
-                          </h5>
+                          <div className="flex items-center gap-1.5">
+                            <h5 className="text-xs font-bold text-zinc-200 group-hover:text-white transition">
+                              {match.name}
+                            </h5>
+                            {match.verified && (
+                              <CheckCircle
+                                className="w-3 h-3 text-emerald-400"
+                                fill="currentColor"
+                              />
+                            )}
+                          </div>
                           <p className="text-[10px] text-zinc-500 font-mono mt-0.5">
                             {match.sport} • {match.position} • {match.age}y/o •{" "}
                             {match.location}
