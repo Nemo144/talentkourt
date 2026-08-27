@@ -23,7 +23,8 @@ model User {
   flagsSubmitted        Flag[]             @relation("UserFlags")
   moderationsExecuted   ModerationLog[]    @relation("AdminModerations")
   suspendUntil DateTime?
-}
+  notifications         Notification[]     @relation("UserNotifications")
+  }
 
 model Tid {
   uid     String   @id
@@ -83,6 +84,21 @@ model ModerationLog {
   admin      User             @relation("AdminModerations", fields: [adminId], references: [id])
 }
 
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String           // Foreign key referencing the target recipient user
+  content   String           // The actual text notification message
+  type      NotificationType // Enforces specific types via enum
+  isRead    Boolean          @default(false) // Tracks read status
+  createdAt DateTime         @default(now()) // Timestamp marker
+
+  // Relations
+  user      User             @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Database Index for lightning-fast lookups when rendering the feed
+  @@index([userId, isRead, createdAt])
+}
+
 enum UserType {
   ATHLETE
   SCOUT
@@ -117,4 +133,14 @@ enum ModerationAction {
   APPROVED
   REMOVED
   WARNED
+}
+
+enum NotificationType {
+  VERIFICATION_APPROVED
+  VERIFICATION_REJECTED
+  TID_ISSUED
+  ACCOUNT_SUSPENDED
+  CONTENT_REMOVED
+  CONTENT_WARNED
+  SYSTEM_ALERT
 }
