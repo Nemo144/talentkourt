@@ -40,7 +40,9 @@ export const createNotification = async ({
     return {
       success: false,
       message:
-        error instanceof Error ? error : "An unknown write error occurred",
+        error instanceof Error
+          ? error.message
+          : "An unknown write error occurred",
     };
   }
 };
@@ -67,6 +69,32 @@ export const getNotifications = async (userId: string) => {
         error instanceof Error
           ? error.message
           : "An unknown query error occurred",
+    };
+  }
+};
+
+//flips the tracking state bit flag from false to true
+export const markAsRead = async (notificationId: string) => {
+  try {
+    const updatedNotification = await prisma.notification.update({
+      where: { id: notificationId },
+      data: { isRead: true },
+    });
+
+    revalidatePath("/dashboard");
+
+    return { success: true, data: updatedNotification };
+  } catch (error) {
+    console.error(
+      `Failed to mark notification cell ${notificationId} as read:`,
+      error,
+    );
+    return {
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "An unknown record update error occurred",
     };
   }
 };
