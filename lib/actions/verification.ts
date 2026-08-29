@@ -1,6 +1,7 @@
 "use server";
 
 import { VerificationStatus } from "../generated/prisma/enums";
+import { createNotification } from "../services/notificationService";
 import { issueTId } from "../services/tidService";
 import { prisma } from "@/lib/prisma";
 
@@ -21,6 +22,12 @@ export const approveUser = async (
         verificationStatus: "VERIFIED" as VerificationStatus,
         notes: "User verified and T.id issued",
       },
+    });
+
+    await createNotification({
+      userId,
+      content: "Your profile has been verified! Your T.id has been issued.",
+      type: "TID_ISSUED",
     });
 
     return { success: true, message: "User approved successfully" };
@@ -50,6 +57,12 @@ export const rejectUser = async (
         verificationStatus: "REJECTED" as VerificationStatus,
         notes,
       },
+    });
+
+    await createNotification({
+      userId,
+      content: `Your verification was declined. Reason: ${notes}`,
+      type: "VERIFICATION_REJECTED",
     });
 
     return { success: true, message: "User rejected" };
