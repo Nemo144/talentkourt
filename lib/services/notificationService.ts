@@ -44,3 +44,29 @@ export const createNotification = async ({
     };
   }
 };
+
+//fetches all notifs records targeting a specific user node, ordered newest first
+export const getNotifications = async (userId: string) => {
+  try {
+    const notification = await prisma.notification.findMany({
+      where: { userId },
+      orderBy: {
+        createdAt: "desc", //newest tot oldest
+      },
+    });
+
+    return { success: true, data: notification };
+  } catch (error) {
+    console.error(
+      `Failed to retrieve notifications stack for user node ${userId}:`,
+      error,
+    );
+    return {
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "An unknown query error occurred",
+    };
+  }
+};
