@@ -25,7 +25,7 @@ import {
 import TIdBadge from "@/components/TIdBadge";
 import VerificationBanner from "@/components/VerificationBanner";
 import VerificationTimeline from "@/components/VerificationTimeline";
-import NotificationCenterWrapper from "@/components/NotificationCenterWrapper";
+import NotificationCenter from "@/components/NotificationCenter";
 
 interface PlayerDashboardProps {
   verificationData?: {
@@ -522,7 +522,7 @@ const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
               <h2 className="text-xl font-bold">My Analytics</h2>
             </div>
 
-            <NotificationCenterWrapper notifications={[]} />
+            <NotificationCenter notifications={[]} />
 
             {/* Total Views */}
             <div className="bg-gradient-to-br from-gray-900/90 to-gray-800/90 backdrop-blur-xl border border-gray-800 rounded-xl p-5">
