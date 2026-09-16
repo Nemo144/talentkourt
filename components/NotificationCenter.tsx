@@ -28,7 +28,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
   // and triggers an instant Next.js data revalidation path cache flush on completion.
   const [isPending, startTransition] = useTransition();
 
-  //calculate unread indicators dynamicallyfrom the imcoming props collection
+  //calculate unread indicators dynamically from the incoming props collection
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   //trigger server action within a transition to update cache states instantly
