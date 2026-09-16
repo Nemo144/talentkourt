@@ -53,7 +53,7 @@ export const getNotifications = async (userId: string) => {
     const notification = await prisma.notification.findMany({
       where: { userId },
       orderBy: {
-        createdAt: "desc", //newest tot oldest
+        createdAt: "desc", //newest to oldest
       },
     });
 
