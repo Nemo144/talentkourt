@@ -24,6 +24,7 @@ model User {
   moderationsExecuted   ModerationLog[]    @relation("AdminModerations")
   suspendUntil DateTime?
   notifications         Notification[]     @relation("UserNotifications")
+  configsUpdated        SystemConfig[]     @relation("AdminSystemConfigs")
   }
 
 model Tid {
@@ -97,6 +98,20 @@ model Notification {
 
   // Database Index for lightning-fast lookups when rendering the feed
   @@index([userId, isRead, createdAt])
+}
+
+model SystemConfig {
+  key         String   @id // The target setting name string token (e.g., "verification_required")
+  value       String   // Encoded configuration values parsed at runtime
+  description String   // Informative context outlining the functional impact of this key
+  updatedAt   DateTime @updatedAt // Automatically updates timestamp on every database mutation
+  adminId     String   // The explicit identifier tracking the mutating administrator
+
+  // Relations
+  updatedBy   User     @relation("AdminSystemConfigs", fields: [adminId], references: [id])
+
+  // Database optimization index to speed up telemetry checks
+  @@index([adminId])
 }
 
 enum UserType {
