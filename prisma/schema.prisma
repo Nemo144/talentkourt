@@ -101,19 +101,16 @@ model Notification {
 }
 
 model SystemConfig {
-  key         String   @id // The target setting name string token (e.g., "verification_required")
-  value       String   // Encoded configuration values parsed at runtime
-  description String   // Informative context outlining the functional impact of this key
-  updatedAt   DateTime @updatedAt // Automatically updates timestamp on every database mutation
-  adminId     String   // The explicit identifier tracking the mutating administrator
+  key         ConfigKey @id
+  value       String
+  description String
+  updatedAt   DateTime  @updatedAt
+  adminId     String
 
-  // Relations
-  updatedBy   User     @relation("AdminSystemConfigs", fields: [adminId], references: [id])
+  updatedBy   User      @relation("AdminSystemConfigs", fields: [adminId], references: [id])
 
-  // Database optimization index to speed up telemetry checks
   @@index([adminId])
 }
-
 enum UserType {
   ATHLETE
   SCOUT
@@ -158,4 +155,15 @@ enum NotificationType {
   CONTENT_REMOVED
   CONTENT_WARNED
   SYSTEM_ALERT
+}
+
+enum ConfigKey {
+  VERIFICATION_REQUIRED
+  TID_FORMAT
+  MAX_FLAGS_BEFORE_REVIEW
+  REGISTRATION_OPEN
+  EMAIL_NOTIFICATIONS_ENABLED
+  CONTENT_MODERATION_ENABLED
+  RATE_LIMIT_REQUESTS_PER_MINUTE
+  SUSPENSION_DURATION_DAYS
 }
