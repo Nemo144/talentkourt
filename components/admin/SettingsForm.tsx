@@ -4,7 +4,6 @@ import React, { useState, useTransition } from "react";
 import { ConfigKey } from "@/lib/generated/prisma/enums";
 import { updateConfig } from "@/lib/actions/settings";
 import {
-  Settings,
   Edit2,
   Check,
   X,
@@ -203,7 +202,7 @@ export default function SettingsForm({
                           )}
                         </button>
                       ) : (
-                        <div className="min-w-[80px] text-center rounded-lg bg-zinc-900 border border-zinc-800/80 px-3 py-1.5 font-mono text-xs font-black text-zinc-100">
+                        <div className="min-w-20 text-center rounded-lg bg-zinc-900 border border-zinc-800/80 px-3 py-1.5 font-mono text-xs font-black text-zinc-100">
                           {item.value}
                         </div>
                       )}
