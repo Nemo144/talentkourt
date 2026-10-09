@@ -28,7 +28,7 @@ interface ConfigItem {
 
 interface SettingsFormProps {
   configs: ConfigItem[];
-  currentAdminId: string; // The active session admin id passed down from theserver shell
+  currentAdminId: string; // The active session admin id passed down from the server shell
 }
 
 export default function SettingsForm({
