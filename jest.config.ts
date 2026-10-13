@@ -2,6 +2,7 @@ import type { Config } from "jest";
 
 const config: Config = {
   testEnvironment: "jsdom",
+  testRunner: "jest-circus/runner",
   transform: {
     "^.+\\.tsx?$": [
       "ts-jest",
