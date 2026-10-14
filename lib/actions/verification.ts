@@ -41,6 +41,7 @@ export const rejectUser = async (
   userId: string,
   adminId: string,
   notes: string,
+  p0: string,
 ) => {
   try {
     //update the user status to rejected
