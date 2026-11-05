@@ -8,7 +8,8 @@ export default async function NotificationCenterWrapper() {
   if (!session?.user?.id) return null;
 
   const result = await getNotifications(session.user.id);
-  const notifications = result.success && result.data ? result.data : [];
+  if (!result.success) console.error("failed:", result.message)
+  const notifications = result.success && result.data ? result.data.slice(0, 20) : [];
 
   return <NotificationCenter notifications={notifications} />;
 }

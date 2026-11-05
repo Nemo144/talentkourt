@@ -35,15 +35,22 @@ const AdminNav = () => {
         </Link>
 
         <Link
-          className={style("/admin/user-management")}
-          href="/admin/user-management"
+          className={style("/admin/verification")}
+          href="/admin/verification"
+        >
+          Verification
+        </Link>
+
+        <Link
+          className={style("/admin/users")}
+          href="/admin/users"
         >
           User Management
         </Link>
 
         <Link
-          className={style("/admin/content-moderation")}
-          href="/admin/content-moderation"
+          className={style("/admin/moderation")}
+          href="/admin/moderation"
         >
           Content Moderation
         </Link>

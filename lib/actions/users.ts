@@ -96,7 +96,7 @@ export const revokeTid = async (
       data: result,
     };
   } catch (error) {
-    console.error("Failed to revoke t.id");
+    console.error("Failed to revoke t.id", error);
     return {
       success: false,
       message:

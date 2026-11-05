@@ -11,24 +11,7 @@ interface NotificationToastProps {
   onClose: (id: string) => void;
   durationMs?: number; // Optional fallback timer override (default: 4000ms)
 }
-
-const NotificationToast: React.FC<NotificationToastProps> = ({
-  id,
-  message,
-  type,
-  onClose,
-  durationMs = 4000,
-}) => {
-  //using the effect hook for the auto dismiss time
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onClose(id);
-    }, durationMs);
-
-    return () => clearTimeout(timer);
-  }, [id, durationMs, onClose]);
-
-  //configuration mapping
+//configuration mapping
   const getToastConfig = (toastType: NotificationType) => {
     switch (toastType) {
       case "TID_ISSUED":
@@ -69,6 +52,23 @@ const NotificationToast: React.FC<NotificationToastProps> = ({
         };
     }
   };
+const NotificationToast: React.FC<NotificationToastProps> = ({
+  id,
+  message,
+  type,
+  onClose,
+  durationMs = 4000,
+}) => {
+  //using the effect hook for the auto dismiss time
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose(id);
+    }, durationMs);
+
+    return () => clearTimeout(timer);
+  }, [id, durationMs, onClose]);
+
+  
 
   const config = getToastConfig(type);
   const Icon = config.icon;
@@ -103,6 +103,7 @@ const NotificationToast: React.FC<NotificationToastProps> = ({
         onClick={() => onClose(id)}
         className="shrink-0 rounded p-0.5 text-zinc-500 hover:bg-zinc-900 hover:text-zinc-200 transition"
         title="Dismiss Alert"
+        aria-label="Dismiss alert"
       >
         <X className="w-3.5 h-3.5" />
       </button>

@@ -15,7 +15,7 @@ const VerificationBanner: React.FC<VerificationBannerProps> = ({
   const [isDismissed, setIsDismissed] = useState(false);
 
   // If the user manually closed the banner or they are already pending review, return null
-  if (isDismissed || status === "PENDING") return null;
+  if ((isDismissed && status !== "REJECTED") || status === "PENDING") return null;
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl transition-all animate-fade-in group">
@@ -26,6 +26,8 @@ const VerificationBanner: React.FC<VerificationBannerProps> = ({
         onClick={() => setIsDismissed(true)}
         className="absolute top-4 right-4 text-zinc-600 hover:text-zinc-400 text-xs font-mono transition p-1 rounded hover:bg-zinc-900"
         title="Dismiss Alert"
+        hidden={status === "REJECTED"}
+        aria-label="Dismiss alert"
       >
         ✕
       </button>

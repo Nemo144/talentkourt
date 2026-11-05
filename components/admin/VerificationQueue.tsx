@@ -1,6 +1,6 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
-// import ActionButtons from "./ActionButtons"
+import ActionButtons from "./ActionButtons";
 
 export default async function VerificationQueue() {
   //fetch pending users from db
@@ -72,12 +72,9 @@ export default async function VerificationQueue() {
                   </td>
 
                   <td className="px-6 py-4 text-right">
-                    <button className="mr-2 px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700">
-                      Approve
-                    </button>
-                    <button className="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">
-                      Reject
-                    </button>
+                      <ActionButtons userId={user.id} userType={user.userType as any} />
+                    
+                    
                   </td>
                 </tr>
               ))}

@@ -15,6 +15,7 @@ export default async function UsersTable() {
       tid: true,
       joinedAt: true,
     },
+    take: 20,
   });
 
   return (

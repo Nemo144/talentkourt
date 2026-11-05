@@ -21,8 +21,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           },
         });
 
-        //return null if user is not found
-        if (!user) return null;
+        //return null if user is not found or is suspended
+        if (!user || user.status === "SUSPENDED") return null;
 
         //compare the password against the stored hashed password
         const isValid = await bcrypt.compare(password, user.passwordHash);
@@ -32,7 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return {
           id: user.id,
           email: user.email,
-          TId: user.tid ?? undefined,
+          tid: user.tid ?? undefined,
           userType: user.userType,
           status: user.status,
         };
@@ -45,7 +45,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       //if user exists(runs only on first signin)
       if (user) {
         token.id = user.id;
-        token.TId = user.tid;
+        token.tid = user.tid;
         token.userType = user.userType;
         token.status = user.status;
       }
@@ -54,7 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     session({ session, token }) {
       //expose token fields to the frontend session object
       session.user.id = token.id as string;
-      session.user.tid = token.TId as string;
+      session.user.tid = token.tid as string;
       session.user.userType = token.userType as
         | "ATHLETE"
         | "SCOUT"

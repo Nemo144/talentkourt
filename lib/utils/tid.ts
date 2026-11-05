@@ -20,7 +20,7 @@ export const generateNumericId = (): number => {
   );
 };
 
-//generate concatenated Tid eg "ATH-0011"
+//generate concatenated Tid eg "ATH-08011"
 export const generateTId = (prefix: TIdPrefix): string => {
   const id = generateNumericId();
   const paddedId = padNumericId(id);

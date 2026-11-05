@@ -55,7 +55,7 @@ const TidBadge: React.FC<TIdBadgeProps> = ({
     );
   }
 
-  if (status === "PENDING") {
+  if (status === "PENDING" || status === "VERIFIED") {
     return (
       <div className="w-full max-w-sm rounded-2xl border border-zinc-800 border-dashed bg-zinc-950/40 p-6 text-left">
         <div className="flex flex-col gap-3">

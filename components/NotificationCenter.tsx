@@ -34,7 +34,8 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
   //trigger server action within a transition to update cache states instantly
   const handleMarkRead = (id: string) => {
     startTransition(async () => {
-      await markAsRead(id);
+      const res = await markAsRead(id)
+      if (!res.success) alert(res.message)
     });
   };
 
@@ -124,6 +125,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                         {
                           month: "short",
                           day: "numeric",
+                          year: "numeric"
                         },
                       )}
                     </span>

@@ -1,5 +1,6 @@
 "use client";
-
+import { signIn } from "next-auth/react"; 
+import { useRouter } from "next/navigation"
 import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
@@ -10,6 +11,8 @@ const SignInPage = () => {
     password: "",
     rememberMe: false,
   });
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,11 +29,34 @@ const SignInPage = () => {
 
   const sportsIcons = ["⚽", "⚾", "🏀", "🏈", "🏐", "🎾", "🏒", "🥊"];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Sign in:", formData);
-    // TODO: Add your authentication API call here
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError(null);
+
+  console.log("Attempting authentication hook:", formData.email);
+
+  try {
+    // 2. Trigger the server authentication protocol
+    const result = await signIn("credentials", {
+      email: formData.email,
+      password: formData.password,
+      redirect: false, // Prevents full-page reloads so we can handle routing smoothly
+    });
+
+    if (result?.error) {
+      setError("Invalid administrative or user credentials.");
+      console.error("Authentication rejected:", result.error);
+    } else {
+      console.log("Authentication successful! Routing to workspace...");
+      // 3. Send them directly to your admin verification view for the recording
+      router.push("/admin/verification"); 
+      router.refresh();
+    }
+  } catch (err: any) {
+    setError("An unexpected network exception occurred.");
+    console.error("Sign-in execution exception:", err.message);
+  }
+};
 
   const handleSocialLogin = (provider: string) => {
     console.log(`Login with ${provider}`);
