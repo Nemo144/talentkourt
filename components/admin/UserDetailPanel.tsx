@@ -63,8 +63,7 @@ const UserDetailPanel: React.FC<UserDetailPanelProps> = ({ user }) => {
     if (!reason) return;
 
     //call triggerAction to revoke tid
-    triggerAction("Revoking tid...", () => revokeTid(user.id, adminId, reason));
-  };
+triggerAction("Revoking tid...", () => revokeTid(user.id, reason));  };
 
   //function to handle suspending of user
   const handleSuspendUser = () => {
@@ -75,9 +74,7 @@ const UserDetailPanel: React.FC<UserDetailPanelProps> = ({ user }) => {
     if (!reason) return;
 
     //call triggerAction to suspend user
-    triggerAction("Suspending user...", () =>
-      suspendUser(user.id, adminId, reason),
-    );
+    triggerAction("Suspending user...", () => suspendUser(user.id, reason));
   };
   return (
     <div className="w-full max-w-xl rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">

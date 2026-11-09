@@ -3,13 +3,15 @@
 import { prisma } from "@/lib/prisma";
 import { VerificationStatus } from "../generated/prisma/enums";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "../auth/adminMiddleware";
 
 //function to suspend/ban a user
 export const suspendUser = async (
   userId: string,
-  adminId: string,
   reason: string,
 ) => {
+  const session = await requireAdmin()
+  const adminId = session.user.id;
   try {
     //suspend user
     const result = await prisma.$transaction(async (tx) => {
@@ -51,9 +53,10 @@ export const suspendUser = async (
 //function to revoke user T.id
 export const revokeTid = async (
   userId: string,
-  adminId: string,
   reason: string,
 ) => {
+  const session = await requireAdmin();
+  const adminId = session.user.id;
   try {
     const result = await prisma.$transaction(async (tx) => {
       const targetUser = await tx.user.findUnique({
@@ -112,6 +115,7 @@ interface EditUserPayload {
 
 //function to edit core user info
 export const editUserInfo = async (userId: string, data: EditUserPayload) => {
+  await requireAdmin();
   try {
     if (data.email) {
       const existingEmail = await prisma.user.findUnique({
