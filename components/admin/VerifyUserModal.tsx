@@ -12,15 +12,11 @@ interface VerifyUserModalProps {
     joinedAt: Date;
     tid?: string | null;
   };
-  adminId: string;
+
   onClose: () => void;
 }
 
-const VerifyUserModal: React.FC<VerifyUserModalProps> = ({
-  user,
-  adminId,
-  onClose,
-}) => {
+const VerifyUserModal: React.FC<VerifyUserModalProps> = ({ user, onClose }) => {
   //useTransition to keep the UI responsive while rendering heavy states in the background
   const [isPending, startTransition] = useTransition();
 
@@ -34,7 +30,7 @@ const VerifyUserModal: React.FC<VerifyUserModalProps> = ({
   const handleApproveAction = () => {
     startTransition(async () => {
       //fetch data from the approveUser file
-      const response = await approveUser(user.id, adminId, user.userType);
+      const response = await approveUser(user.id, user.userType);
 
       if (response.success) {
         alert("User Approved Successfully");
@@ -57,7 +53,7 @@ const VerifyUserModal: React.FC<VerifyUserModalProps> = ({
 
     startTransition(async () => {
       //fetch data from the rejectUser file
-      const response = await rejectUser(user.id, adminId, rejectionNotes);
+      const response = await rejectUser(user.id, rejectionNotes);
 
       if (response.success) {
         alert("User Rejected Successfully");

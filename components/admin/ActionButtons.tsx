@@ -4,11 +4,11 @@ import React, { useTransition, useState } from "react";
 import { useRouter } from "next/navigation"; // 1. Import the router hook
 import { approveUser, rejectUser } from "@/lib/actions/verification";
 
-export default function ActionButtons({ 
-  userId, 
-  userType 
-}: { 
-  userId: string; 
+export default function ActionButtons({
+  userId,
+  userType,
+}: {
+  userId: string;
   userType: "ATHLETE" | "SCOUT";
 }) {
   const [isPending, startTransition] = useTransition();
@@ -18,24 +18,26 @@ export default function ActionButtons({
   const handleApprove = () => {
     setFeedback("Processing...");
     startTransition(async () => {
-      const res = await approveUser(userId, "test-admin", userType);
+      const res = await approveUser(userId, userType);
       setFeedback(res.message);
-      
+
       if (res.success) {
         // 3. Force Next.js to update the queue view data instantly
-        router.refresh(); 
+        router.refresh();
       }
     });
   };
 
   const handleReject = () => {
+    const reason = prompt("Reason for rejection:");
+    if (!reason) return;
+
     setFeedback("Processing...");
     startTransition(async () => {
-      const res = await rejectUser(userId, "test-admin", "Incomplete verification documents", "FALLBACK");
+      const res = await rejectUser(userId, reason);
       setFeedback(res.message);
-      
+
       if (res.success) {
-        // 4. Force Next.js to update the queue view data instantly
         router.refresh();
       }
     });
@@ -43,7 +45,11 @@ export default function ActionButtons({
 
   return (
     <div className="flex items-center justify-end gap-2">
-      {feedback && <span className="text-xs font-mono text-orange-600 mr-2">{feedback}</span>}
+      {feedback && (
+        <span className="text-xs font-mono text-orange-600 mr-2">
+          {feedback}
+        </span>
+      )}
       <button
         onClick={handleApprove}
         disabled={isPending}

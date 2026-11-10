@@ -1,10 +1,8 @@
-import React from "react";
 import { requireAdmin } from "@/lib/auth/adminMiddleware";
 import { auth } from "@/auth";
 import { getAllConfigs } from "@/lib/actions/settings";
-import SettingsForm from "@/components/admin/SettingsForm";
 import { redirect } from "next/navigation";
-import { Sliders } from "lucide-react";
+import SettingsForm from "@/components/admin/SettingsForm";
 
 export default async function AdminSettingsPage() {
   //Terminate execution instantly if the active session is not a verified admin role
@@ -13,7 +11,7 @@ export default async function AdminSettingsPage() {
   //Fetch the current active admin's authentication session context safely
   const session = await auth();
   if (!session?.user?.id) {
-    redirect("/login");
+    redirect("/sign-in");
   }
 
   //Compile all configuration records out of the database registry pipeline [INDEX]
@@ -50,6 +48,7 @@ export default async function AdminSettingsPage() {
           <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
             Institutional Settings
           </h1>
+
           <p className="text-xs text-zinc-500 mt-1">
             Global system engine settings controls panel targeting runtime flag
             overrides and platform constraints.
@@ -63,10 +62,7 @@ export default async function AdminSettingsPage() {
       </div>
 
       <div className="w-full">
-        <SettingsForm
-          configs={normalizedConfigs}
-          currentAdminId={session.user.id}
-        />
+        <SettingsForm configs={normalizedConfigs} />
       </div>
     </div>
   );

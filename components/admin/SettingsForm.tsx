@@ -28,13 +28,9 @@ interface ConfigItem {
 
 interface SettingsFormProps {
   configs: ConfigItem[];
-  currentAdminId: string; // The active session admin id passed down from the server shell
 }
 
-export default function SettingsForm({
-  configs,
-  currentAdminId,
-}: SettingsFormProps) {
+export default function SettingsForm({ configs }: SettingsFormProps) {
   const [isPending, startTransition] = useTransition();
 
   // Tracks which config row key enum is currently being actively edited
@@ -65,7 +61,7 @@ export default function SettingsForm({
 
   const handleSaveEdit = (key: ConfigKey) => {
     startTransition(async () => {
-      const response = await updateConfig(key, editValue, currentAdminId);
+      const response = await updateConfig(key, editValue);
       if (response.success) {
         setEditingKey(null);
       } else {
@@ -78,7 +74,7 @@ export default function SettingsForm({
     if (isPending) return;
     const toggledValue = currentValue === "true" ? "false" : "true";
     startTransition(async () => {
-      await updateConfig(key, toggledValue, currentAdminId);
+      await updateConfig(key, toggledValue);
     });
   };
 

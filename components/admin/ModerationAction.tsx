@@ -6,7 +6,6 @@ import {
   removeContent,
   warnUser,
 } from "@/lib/actions/moderation";
-import { useSession } from "next-auth/react";
 
 interface ModerationActionProps {
   contentId: string;
@@ -17,11 +16,6 @@ const ModerationAction = ({ contentId }: ModerationActionProps) => {
   //useTransition to prevent UI blocking by handling server action states
   //at the same time without a manual loading spinner state
   const [isPending, startTransition] = useTransition();
-
-  //useSession to manage the adminId's session
-  const { data: session } = useSession();
-
-  const adminId = session?.user.id ?? "";
 
   //function to trigger async actions form the server(approveContent, removeContent, warnUser)
   const executeAction = (
@@ -38,9 +32,7 @@ const ModerationAction = ({ contentId }: ModerationActionProps) => {
 
   //function to handle content approval
   const handleApprove = () => {
-    executeAction("Approving Content", () =>
-      approveContent(adminId, contentId, "ADMIN"),
-    );
+    executeAction("Approving Content", () => approveContent(contentId));
   };
 
   //function to handle content removal
@@ -49,9 +41,7 @@ const ModerationAction = ({ contentId }: ModerationActionProps) => {
 
     if (!reason) return;
 
-    executeAction("Removing Content", () =>
-      removeContent(adminId, contentId, "ADMIN", reason),
-    );
+    executeAction("Removing Content", () => removeContent(contentId, reason));
   };
 
   //function to handle warning of users
@@ -66,7 +56,6 @@ const ModerationAction = ({ contentId }: ModerationActionProps) => {
 
     executeAction("Issuing User Warning", () =>
       warnUser({
-        adminId,
         contentId,
         notes,
         isSevere,

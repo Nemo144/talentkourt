@@ -1,26 +1,20 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import {
-  ContentStatus,
-  ModerationAction,
-  UserType,
-} from "../generated/prisma/enums";
+import { ContentStatus, ModerationAction } from "../generated/prisma/enums";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "../auth/adminMiddleware";
 
 interface WarnUserArgs {
-  adminId: string;
   contentId: string;
   notes: string;
   isSevere?: boolean;
   suspensionDurationDays?: number;
 }
 
-export const approveContent = async (
-  adminId: string,
-  contentId: string,
-  userType: UserType,
-) => {
+export const approveContent = async (contentId: string) => {
+  const session = await requireAdmin();
+  const adminId = session.user.id;
   //approve content
   try {
     const result = await prisma.$transaction(async (tx) => {
@@ -36,7 +30,7 @@ export const approveContent = async (
           contentId,
           adminId,
           action: "APPROVED" as ModerationAction,
-          notes: `Content approved by ${userType.toLowerCase()} administrator`,
+          notes: "Content approved by an administrator",
         },
       });
 
@@ -61,12 +55,9 @@ export const approveContent = async (
   }
 };
 
-export const removeContent = async (
-  adminId: string,
-  contentId: string,
-  userType: UserType,
-  reason: string,
-) => {
+export const removeContent = async (contentId: string, reason: string) => {
+  const session = await requireAdmin();
+  const adminId = session.user.id;
   //remove content
   try {
     const result = await prisma.$transaction(async (tx) => {
@@ -108,12 +99,13 @@ export const removeContent = async (
 };
 
 export const warnUser = async ({
-  adminId,
   contentId,
   notes,
   isSevere = false,
   suspensionDurationDays = 7,
 }: WarnUserArgs) => {
+  const session = await requireAdmin();
+  const adminId = session.user.id;
   try {
     const result = await prisma.$transaction(async (tx) => {
       // Fetch the target content to know WHICH user to suspend

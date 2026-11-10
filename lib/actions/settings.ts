@@ -3,9 +3,11 @@
 import { prisma } from "@/lib/prisma";
 import { ConfigKey } from "../generated/prisma/enums";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "../auth/adminMiddleware";
 
 //the getConfig fnc fetches a single runtime setting cleanly by its unique key identifier
 export const getConfig = async (key: ConfigKey) => {
+  await requireAdmin();
   try {
     const config = await prisma.systemConfig.findUnique({
       where: { key },
@@ -44,6 +46,7 @@ export const getConfig = async (key: ConfigKey) => {
 
 //getAllConfigs to pull the entire configuration stack layout table to populate admin dashboards
 export const getAllConfigs = async () => {
+  await requireAdmin();
   try {
     const configs = await prisma.systemConfig.findMany({
       include: {
@@ -75,12 +78,10 @@ export const getAllConfigs = async () => {
   }
 };
 
-//updateConfig(key, value, adminId) function which Modifies runtime tracking values and links accountability logs
-export const updateConfig = async (
-  key: ConfigKey,
-  value: string,
-  adminId: string,
-) => {
+//updateConfig(key, value) function which Modifies runtime tracking values and links accountability logs
+export const updateConfig = async (key: ConfigKey, value: string) => {
+  const session = await requireAdmin();
+  const adminId = session.user.id;
   try {
     const updatedConfig = await prisma.systemConfig.upsert({
       where: { key },
