@@ -1,5 +1,6 @@
 "use server";
 
+import { requireAdmin } from "../auth/adminMiddleware";
 import { VerificationStatus } from "../generated/prisma/enums";
 import { createNotification } from "../services/notificationService";
 import { issueTId } from "../services/tidService";
@@ -7,9 +8,10 @@ import { prisma } from "@/lib/prisma";
 
 export const approveUser = async (
   userId: string,
-  adminId: string,
   userType: "ATHLETE" | "SCOUT",
 ) => {
+  const session = await requireAdmin();
+  const adminId = session.user.id;
   try {
     //await the t.id generation and user update
     await issueTId(userId, userType);
@@ -37,28 +39,24 @@ export const approveUser = async (
   }
 };
 
-export const rejectUser = async (
-  userId: string,
-  adminId: string,
-  notes: string,
-  p0: string,
-) => {
+export const rejectUser = async (userId: string, notes: string) => {
+  const session = await requireAdmin();
+  const adminId = session.user.id;
   try {
-    //update the user status to rejected
-    await prisma.user.update({
-      where: { id: userId },
-      data: { status: "REJECTED" as VerificationStatus },
-    });
-
-    //update the verificationLog
-    await prisma.verificationLog.create({
-      data: {
-        userId,
-        adminId,
-        verificationStatus: "REJECTED" as VerificationStatus,
-        notes,
-      },
-    });
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { id: userId },
+        data: { status: "REJECTED" as VerificationStatus },
+      }),
+      prisma.verificationLog.create({
+        data: {
+          userId,
+          adminId,
+          verificationStatus: "REJECTED" as VerificationStatus,
+          notes,
+        },
+      }),
+    ]);
 
     await createNotification({
       userId,
