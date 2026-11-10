@@ -1,7 +1,7 @@
 "use client";
 import React, { useTransition } from "react";
 import { NotificationType } from "@/lib/generated/prisma/enums";
-import { markAsRead } from "@/lib/services/notificationService";
+import { markAsRead } from "@/lib/actions/notifications";
 import {
   Bell,
   Check,
@@ -34,8 +34,8 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
   //trigger server action within a transition to update cache states instantly
   const handleMarkRead = (id: string) => {
     startTransition(async () => {
-      const res = await markAsRead(id)
-      if (!res.success) alert(res.message)
+      const res = await markAsRead(id);
+      if (!res.success) alert(res.message);
     });
   };
 
@@ -125,7 +125,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                         {
                           month: "short",
                           day: "numeric",
-                          year: "numeric"
+                          year: "numeric",
                         },
                       )}
                     </span>
