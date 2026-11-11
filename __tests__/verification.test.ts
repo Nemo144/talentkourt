@@ -2,123 +2,84 @@ import { approveUser, rejectUser } from "@/lib/actions/verification";
 import { prisma } from "@/lib/prisma";
 import { issueTId } from "@/lib/services/tidService";
 import { createNotification } from "@/lib/services/notificationService";
-import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/lib/auth/adminMiddleware";
 
-// 1. ✅ FIXED JEST MOCK: Separated instantiation to eliminate implicit cyclical self-referencing types
-jest.mock("@/lib/prisma", () => {
-  const mockPrisma = {
-    verificationLog: {
-      create: jest.fn().mockResolvedValue({ id: "log-abc" }),
-    },
-    user: {
-      update: jest
-        .fn()
-        .mockResolvedValue({
-          id: "user-123",
-          status: "VERIFIED",
-          tid: "ATH-00123",
-        }),
-    },
-    $transaction: jest.fn(),
-  };
+jest.mock("@/lib/prisma", () => ({
+  prisma: {
+    verificationLog: { create: jest.fn().mockResolvedValue({ id: "log-abc" }) },
+    user: { update: jest.fn().mockResolvedValue({ id: "user-123" }) },
+    $transaction: jest.fn().mockResolvedValue([]),
+  },
+}));
 
-  // Safely assign transactional implementation using an absolute callback parameter signature block
-  mockPrisma.$transaction.mockImplementation(
-    (callback: (tx: typeof mockPrisma) => Promise<unknown>) =>
-      callback(mockPrisma),
-  );
+jest.mock("@/lib/auth/adminMiddleware", () => ({
+  requireAdmin: jest.fn(),
+}));
 
-  return { prisma: mockPrisma };
-});
-
-// Mock tidService
 jest.mock("@/lib/services/tidService", () => ({
   issueTId: jest.fn().mockResolvedValue(undefined),
 }));
 
-// Mock notificationService
 jest.mock("@/lib/services/notificationService", () => ({
   createNotification: jest.fn().mockResolvedValue({ success: true }),
 }));
 
-// Mock revalidatePath
-jest.mock("next/cache", () => ({
-  revalidatePath: jest.fn(),
-}));
-
-describe("Admin Verification Server Actions", () => {
-  const mockAdminId = "admin-999";
-  const mockUserId = "user-123";
+describe("Admin verification server actions", () => {
+  const adminId = "admin-999";
+  const userId = "user-123";
 
   beforeEach(() => {
     jest.clearAllMocks();
+    (requireAdmin as jest.Mock).mockResolvedValue({ user: { id: adminId } });
   });
 
-  // ========================================================
-  // TEST CASE 1: APPROVE USER
-  // ========================================================
-  it("should successfully approve a user, issue a T.ID, and log metrics", async () => {
-    const response = await approveUser(mockAdminId, mockUserId, "ATHLETE");
+  it("approves a user, issues a T.id, logs it with the session admin id and notifies", async () => {
+    const response = await approveUser(userId, "ATHLETE");
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        success: true,
+    expect(response.success).toBe(true);
+    expect(issueTId).toHaveBeenCalledWith(userId, "ATHLETE");
+    expect(prisma.verificationLog.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        userId,
+        adminId,
+        verificationStatus: "VERIFIED",
       }),
-    );
-
-    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
-    expect(prisma.user.update).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: { id: mockUserId },
-        data: expect.objectContaining({ status: "VERIFIED" }),
-      }),
-    );
-    expect(issueTId).toHaveBeenCalledWith(mockUserId);
-    expect(createNotification).toHaveBeenCalledWith(
-      expect.objectContaining({
-        userId: mockUserId,
-        type: "TID_ISSUED",
-      }),
-    );
-    expect(revalidatePath).toHaveBeenCalledWith("/admin/moderation");
-  });
-
-  // ========================================================
-  // TEST CASE 2: REJECT USER
-  // ========================================================
-  it("should successfully reject a user and dispatch an alert notification", async () => {
-    // Override user update mock value specifically for the rejection pipeline
-    (prisma.user.update as jest.Mock).mockResolvedValueOnce({
-      id: mockUserId,
-      status: "REJECTED",
     });
-
-    const response = await rejectUser(
-      mockAdminId,
-      mockUserId,
-      "ADMIN",
-      "Incomplete verification files provided.",
+    expect(createNotification).toHaveBeenCalledWith(
+      expect.objectContaining({ userId, type: "TID_ISSUED" }),
     );
+  });
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        success: true,
+  it("rejects a user with the typed reason and never issues a T.id", async () => {
+    const reason = "Incomplete verification files provided.";
+    const response = await rejectUser(userId, reason);
+
+    expect(response.success).toBe(true);
+    expect(issueTId).not.toHaveBeenCalled();
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(prisma.verificationLog.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        userId,
+        adminId,
+        verificationStatus: "REJECTED",
+        notes: reason,
       }),
-    );
-
-    expect(prisma.user.update).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: { id: mockUserId },
-        data: expect.objectContaining({ status: "REJECTED" }),
-      }),
-    );
-    expect(issueTId).not.toHaveBeenCalled(); // Rejections must NEVER issue a T.ID passport
+    });
     expect(createNotification).toHaveBeenCalledWith(
       expect.objectContaining({
-        userId: mockUserId,
+        userId,
         type: "VERIFICATION_REJECTED",
+        content: expect.stringContaining(reason),
       }),
     );
-    expect(revalidatePath).toHaveBeenCalledWith("/admin/moderation");
+  });
+
+  it("does not run any action when the caller is not an admin", async () => {
+    (requireAdmin as jest.Mock).mockRejectedValue(new Error("NEXT_REDIRECT"));
+
+    await expect(approveUser(userId, "ATHLETE")).rejects.toThrow();
+
+    expect(issueTId).not.toHaveBeenCalled();
+    expect(prisma.verificationLog.create).not.toHaveBeenCalled();
   });
 });
