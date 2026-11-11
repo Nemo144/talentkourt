@@ -2,6 +2,8 @@
 import path from "node:path";
 import { createRequire } from "node:module";
 
+if (process.env.ALLOW_DESTRUCTIVE_SEED !== "yes")
+  throw new Error("Refusing to wipe the database.");
 // Dynamically track the absolute directory root path regardless of execute location
 const require = createRequire(import.meta.url);
 const projectRoot = path.resolve(process.cwd());
@@ -13,12 +15,12 @@ console.log(`📦 Attempting absolute resolution hook: ${generatedPath}`);
 const { PrismaClient } = require(generatedPath);
 
 const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL
+  datasourceUrl: process.env.DATABASE_URL,
 } as any);
 
 async function main() {
   console.log("⏳ Flushing and resetting seed matrices for recording...");
-  
+
   await prisma.verificationLog.deleteMany({});
   await prisma.user.deleteMany({});
 
@@ -80,7 +82,9 @@ async function main() {
     },
   });
 
-  console.log("🎯 Seed complete! Database rows match your recording guide exactly.");
+  console.log(
+    "🎯 Seed complete! Database rows match your recording guide exactly.",
+  );
 }
 
 main()

@@ -1,51 +1,68 @@
 import React from "react";
 import { Users, UserCheck, Clock, Search } from "lucide-react";
 import StatCard from "@/components/admin/StatCard";
+import { requireAdmin } from "@/lib/auth/adminMiddleware";
+import { getUserMetrics } from "@/lib/services/analyticsService";
 
-const AdminDashboard = () => {
-  const stats = {
-    totalUsers: 1240,
-    totalAthletes: 980,
-    totalScouts: 260,
-    pendingVerification: 34,
-  };
+const AdminDashboard = async () => {
+  await requireAdmin();
+
+  const result = await getUserMetrics();
+  const data = result.success ? result.data : undefined;
+
+  const total = data?.totalUsers ?? 0;
+  const athletes = data?.byUserType.ATHLETE ?? 0;
+  const scouts = data?.byUserType.SCOUT ?? 0;
+  const pending = data?.byStatus.PENDING ?? 0;
+
   return (
-    <div className="flex-1 p-6 space-y-6 bg-slate-50 dark:bg-slate-900 min-h-screen">
+    <div className="flex-1 p-6 space-y-6 min-h-screen">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
-          Admin DashBoard
+        <h1 className="text-2xl font-bold tracking-tight text-white">
+          Admin Dashboard
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          Overview and Analytics
-        </p>
+        <p className="text-sm text-slate-400">Overview and Analytics</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Total Users"
-          value={stats.totalUsers}
-          trend={{ value: "+4.5%", label: "vs last Month", isPositive: true }}
+          value={total}
+          trend={{
+            value: String(total),
+            label: "registered accounts",
+            isPositive: true,
+          }}
           icon={Users}
         />
-
         <StatCard
           label="Total Athletes"
-          value={stats.totalAthletes}
-          trend={{ value: "+12%", label: "vs last week", isPositive: true }}
+          value={athletes}
+          trend={{
+            value: String(athletes),
+            label: "athlete accounts",
+            isPositive: true,
+          }}
           icon={UserCheck}
         />
-
         <StatCard
           label="Total Scouts"
-          value={stats.totalScouts}
-          trend={{ value: "-2%", label: "vs last week", isPositive: false }}
+          value={scouts}
+          trend={{
+            value: String(scouts),
+            label: "scout accounts",
+            isPositive: true,
+          }}
           icon={Search}
         />
-
         <StatCard
           label="Pending Verification"
-          value={stats.pendingVerification}
-          trend={{ value: "8 urgent", label: "review", isPositive: false }}
+          value={pending}
+          trend={{
+            value: pending > 0 ? "Needs review" : "All clear",
+            label: "",
+            isPositive: pending === 0,
+          }}
           icon={Clock}
         />
       </div>
