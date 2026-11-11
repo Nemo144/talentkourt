@@ -25,7 +25,7 @@ export default async function VerificationQueue() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Verification Queue</h1>
+        <h1 className="text-2xl font-bold text-white">Verification Queue</h1>
       </div>
 
       {pendingUsers.length === 0 ? (
@@ -72,9 +72,10 @@ export default async function VerificationQueue() {
                   </td>
 
                   <td className="px-6 py-4 text-right">
-                      <ActionButtons userId={user.id} userType={user.userType as any} />
-                    
-                    
+                    <ActionButtons
+                      userId={user.id}
+                      userType={user.userType as any}
+                    />
                   </td>
                 </tr>
               ))}
