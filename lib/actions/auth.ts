@@ -21,6 +21,13 @@ export const registerUser = async (
   }
 
   try {
+    const registration = await prisma.systemConfig.findUnique({
+      where: { key: "REGISTRATION_OPEN" },
+    });
+    if (registration && registration.value !== "true") {
+      return { success: false, message: "Registration is currently closed." };
+    }
+
     const existing = await prisma.user.findUnique({
       where: { email: normalised },
     });

@@ -52,7 +52,7 @@ const builtSoFar = [
   "User management and system settings",
   "Analytics dashboard with charts",
   "Notifications triggered by verification decisions",
-  "Athlete and scout dashboards (interface complete, live data coming next)",
+  "Athlete and scout dashboards showing real verification status, T.ids and notifications",
 ];
 
 const stack = [
@@ -127,20 +127,26 @@ export default function Home() {
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              href="/signup"
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 px-6 py-3 font-bold shadow-lg shadow-orange-500/20 transition hover:from-orange-600 hover:to-red-700"
+            >
+              Create an account
+              <ArrowRight className="h-4 w-4" />
+            </Link>
             <a
               href={BLOG_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 px-6 py-3 font-bold shadow-lg shadow-orange-500/20 transition hover:from-orange-600 hover:to-red-700"
+              className="rounded-xl border border-zinc-800 px-6 py-3 font-bold text-zinc-200 transition hover:border-zinc-600 hover:text-white"
             >
               Read the build log
-              <ArrowRight className="h-4 w-4" />
             </a>
             <a
               href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-xl border border-zinc-800 px-6 py-3 font-bold text-zinc-200 transition hover:border-zinc-600 hover:text-white"
+              className="px-2 py-3 font-semibold text-zinc-400 transition hover:text-white"
             >
               View the code
             </a>
