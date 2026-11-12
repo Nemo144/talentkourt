@@ -102,10 +102,11 @@ const VerificationTimeLine: React.FC<VerificationTimelineProps> = ({
                   </span>
 
                   <span className="font-mono text-[10px] text-zinc-500 shrink-0">
-                    {event.timestamp.toLocaleDateString(undefined, {
+                    {event.timestamp.toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
+                      timeZone: "UTC",
                     })}
                   </span>
                 </div>

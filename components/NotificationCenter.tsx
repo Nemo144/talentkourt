@@ -121,11 +121,12 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                     <Clock className="w-2.5 h-2.5" />
                     <span>
                       {new Date(notification.createdAt).toLocaleDateString(
-                        undefined,
+                        "en-US",
                         {
                           month: "short",
                           day: "numeric",
                           year: "numeric",
+                          timeZone: "UTC",
                         },
                       )}
                     </span>
