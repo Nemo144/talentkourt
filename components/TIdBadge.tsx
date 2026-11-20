@@ -1,4 +1,5 @@
 import React from "react";
+import { formatDate } from "@/lib/utils/date";
 
 export interface TIdBadgeProps {
   tid?: string | null;
@@ -13,10 +14,7 @@ const TidBadge: React.FC<TIdBadgeProps> = ({
   joinedAt,
   onActionClick,
 }) => {
-  const memberSince = new Date(joinedAt).toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-  });
+  const memberSince = formatDate(joinedAt, { year: "numeric", month: "short" });
 
   if (status === "VERIFIED" && tid) {
     return (

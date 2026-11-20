@@ -1,6 +1,7 @@
 import { ContentStatus } from "@/lib/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
 import ModerationAction from "./ModerationAction";
+import { formatDate } from "@/lib/utils/date";
 
 const FlaggedContent = async () => {
   //fetch the under-review content
@@ -106,12 +107,12 @@ const FlaggedContent = async () => {
                           Flag ID Reference: {flag.id}
                         </span>
                         <span className="text-zinc-600 font-mono">
-                          {flag.createdAt.toLocaleDateString(undefined, {
+                          {formatDate(flag.createdAt, {
                             month: "short",
                             day: "numeric",
                             hour: "2-digit",
                             minute: "2-digit",
-                          })}
+                          })}{" "}
                         </span>
                       </div>
                       <p className="text-xs text-zinc-300 bg-zinc-900/40 p-2 rounded border border-zinc-900/60 mt-1">

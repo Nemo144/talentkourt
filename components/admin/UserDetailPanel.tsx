@@ -2,6 +2,7 @@
 import React, { useTransition } from "react";
 import { revokeTid, editUserInfo, suspendUser } from "@/lib/actions/users";
 import { UserType, VerificationStatus } from "@/lib/generated/prisma/enums";
+import { formatDate } from "@/lib/utils/date";
 
 interface UserDetailPanelProps {
   user: {
@@ -56,7 +57,8 @@ const UserDetailPanel: React.FC<UserDetailPanelProps> = ({ user }) => {
     if (!reason) return;
 
     //call triggerAction to revoke tid
-triggerAction("Revoking tid...", () => revokeTid(user.id, reason));  };
+    triggerAction("Revoking tid...", () => revokeTid(user.id, reason));
+  };
 
   //function to handle suspending of user
   const handleSuspendUser = () => {
@@ -121,11 +123,7 @@ triggerAction("Revoking tid...", () => revokeTid(user.id, reason));  };
             Joined System
           </span>
           <span className="font-mono text-xs text-zinc-300">
-            {user.joinedAt.toLocaleDateString(undefined, {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
+            formatDate(user.joinedAt)
           </span>
         </div>
         <div>
@@ -133,13 +131,7 @@ triggerAction("Revoking tid...", () => revokeTid(user.id, reason));  };
             Last Active Trace
           </span>
           <span className="font-mono text-xs text-zinc-300">
-            {user.lastActive
-              ? user.lastActive.toLocaleDateString(undefined, {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })
-              : "Never Recorded"}
+            {user.lastActive ? formatDate(user.lastActive) : "Never Recorded"}
           </span>
         </div>
       </div>

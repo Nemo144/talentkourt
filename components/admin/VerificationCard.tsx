@@ -1,4 +1,5 @@
 import React from "react";
+import { formatDate } from "@/lib/utils/date";
 
 interface VerificationCardProps {
   user: {
@@ -70,11 +71,7 @@ const VerificationCard: React.FC<VerificationCardProps> = ({ user }) => {
             Registration Date
           </span>
           <span className="font-mono text-zinc-400">
-            {user.joinedAt.toLocaleDateString(undefined, {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
+            formatDate(user.joinedAt)
           </span>
         </div>
       </div>

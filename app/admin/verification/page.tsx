@@ -5,7 +5,7 @@ const page = async () => {
   //invoke the requireAdmin function to trigger security checks
   await requireAdmin();
   return (
-    <div>
+    <div className="p-6">
       <VerificationQueue />
     </div>
   );

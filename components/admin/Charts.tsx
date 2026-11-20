@@ -13,6 +13,7 @@ import {
   Cell,
   Legend,
 } from "recharts";
+import { formatDate } from "@/lib/utils/date";
 
 interface ChartTooltipPayloadItem {
   name: string;
@@ -101,10 +102,7 @@ export default function Charts({ signupData, userTypeData }: ChartsProps) {
                   const date = new Date(str);
                   return isNaN(date.getTime())
                     ? str
-                    : date.toLocaleDateString(undefined, {
-                        month: "short",
-                        day: "numeric",
-                      });
+                    : formatDate(date, { month: "short", day: "numeric" });
                 }}
               />
               <YAxis

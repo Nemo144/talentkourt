@@ -10,6 +10,7 @@ import {
   XCircle,
   Clock,
 } from "lucide-react";
+import { formatDate } from "@/lib/utils/date";
 
 interface NotificationCenterProps {
   notifications: {
@@ -120,15 +121,10 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                   <div className="flex items-center gap-1 text-zinc-600 font-medium">
                     <Clock className="w-2.5 h-2.5" />
                     <span>
-                      {new Date(notification.createdAt).toLocaleDateString(
-                        "en-US",
-                        {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                          timeZone: "UTC",
-                        },
-                      )}
+                      {formatDate(notification.createdAt, {
+                        month: "short",
+                        day: "numeric",
+                      })}
                     </span>
                   </div>
                 </div>

@@ -13,6 +13,7 @@ import {
   Clock,
   User,
 } from "lucide-react";
+import { formatDate } from "@/lib/utils/date";
 
 interface ConfigItem {
   key: ConfigKey;
@@ -125,13 +126,12 @@ export default function SettingsForm({ configs }: SettingsFormProps) {
                     <div className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       <span>
-                        {new Date(item.updatedAt).toLocaleDateString("en-US", {
+                        {formatDate(item.updatedAt, {
                           month: "short",
                           day: "numeric",
                           hour: "2-digit",
                           minute: "2-digit",
-                          timeZone: "UTC",
-                        })}
+                        })}{" "}
                       </span>
                     </div>
                   </div>

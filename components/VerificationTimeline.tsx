@@ -1,4 +1,5 @@
 import React from "react";
+import { formatDate } from "@/lib/utils/date";
 
 //timeline data shape props
 export interface TimelineEvent {
@@ -102,12 +103,7 @@ const VerificationTimeLine: React.FC<VerificationTimelineProps> = ({
                   </span>
 
                   <span className="font-mono text-[10px] text-zinc-500 shrink-0">
-                    {event.timestamp.toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                      timeZone: "UTC",
-                    })}
+                    formatDate(event.timestamp)
                   </span>
                 </div>
 

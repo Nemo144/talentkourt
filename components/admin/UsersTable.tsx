@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { formatDate } from "@/lib/utils/date";
 
 export default async function UsersTable() {
   //fetch all system users directly from the db on the server
@@ -119,11 +120,7 @@ export default async function UsersTable() {
                   </td>
 
                   <td className="px-6 py-4 text-xs font-mono text-zinc-500">
-                    {user.joinedAt.toLocaleDateString(undefined, {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
+                    {formatDate(user.joinedAt)}
                   </td>
 
                   <td className="px-6 py-4 text-right">
